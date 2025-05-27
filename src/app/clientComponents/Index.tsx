@@ -43,10 +43,12 @@ export const Index = () => {
       
 
         {/* CTA Button */}
-       <Link href={"/create"}>
-         <button className="z-10 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg text-white font-medium hover:shadow-lg hover:shadow-indigo-500/30 transition-shadow duration-300 ease-in-out mt-8">
+       <Link
+        className=" z-10 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg text-white font-medium hover:shadow-lg hover:shadow-indigo-500/30 transition-shadow duration-300 ease-in-out mt-10"
+        href={"/create"}>
+     
           Get Started
-        </button>
+       
        </Link>
         {/* Features grid */}
         <div className="flex justify-center gap-8 mt-16 flex-wrap">
