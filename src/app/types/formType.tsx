@@ -1,0 +1,33 @@
+export type FormType={
+    name:string 
+    role:string
+    email:string 
+    socialLinks:{
+        githubURL?:string 
+        linkedinURL?:string 
+    
+    }
+    skill:string[]
+    projects:{
+        name:string 
+        description:string 
+        techStack:string[]
+        repo?:string
+        link?:string  
+    }
+    experience?:{
+        company:string 
+        role:string 
+        duration:string 
+        description?:string
+    }
+    education:{
+        instituition:string
+        degree:string 
+        duration:string 
+    }[]
+    certification:{
+        title:string 
+        issuer:string 
+    }[]
+}
