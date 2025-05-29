@@ -4,30 +4,33 @@ export type FormType={
     email:string 
     socialLinks:{
         githubURL?:string 
-        linkedinURL?:string 
-    
+        linkedinURL?:string  
     }
     skill:string[]
-    projects:{
+    projects:project[]
+    experience?:experience[]
+    educations:education[]
+    certifications:certification[]
+}
+export type project={
         name:string 
         description:string 
-        techStack:string[]
+        techStack:string
         repo?:string
         link?:string  
     }
-    experience?:{
+export type experience={
         company:string 
         role:string 
         duration:string 
         description?:string
     }
-    education:{
+export type education={
         instituition:string
         degree:string 
         duration:string 
-    }[]
-    certification:{
+    }
+export type certification={
         title:string 
         issuer:string 
-    }[]
-}
+    }
