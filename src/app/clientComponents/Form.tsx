@@ -30,6 +30,7 @@ const PortfolioBuilderForm = () => {
           <div className="flex gap-4 pt-6 border-t border-gray-600">
             <button
               type="submit"
+             
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition-colors"
             >
               Generate Portfolio

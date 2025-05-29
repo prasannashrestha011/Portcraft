@@ -1,5 +1,6 @@
 "use client"
 import { FormType } from '@/app/types/formType'
+import { GeneratePDF_file } from '@/utility/generatePDF'
 import React, { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
@@ -7,6 +8,7 @@ const CustomFormProvider = ({children}:{children:ReactNode}) => {
     const methods=useForm<FormType>()
     const onSubmit=(data:FormType)=>{
         console.log("FORM DATA ",data)
+        GeneratePDF_file(data)
     }
     return (
     <FormProvider {...methods}>
