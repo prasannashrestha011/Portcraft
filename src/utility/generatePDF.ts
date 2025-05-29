@@ -30,5 +30,16 @@ export const GeneratePDF_file=(formdata:FormType)=>{
         
         
     }
-    pdfMake.createPdf(docDefinition).open()
+    const pdfGenerator=pdfMake.createPdf(docDefinition);
+   
+    pdfGenerator.getBlob((blob) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = "resume.pdf";
+  link.textContent = "Download PDF";
+  document.body.appendChild(link);
+});
+
+
 }
