@@ -10,6 +10,7 @@ interface RemoveButtonProp{
 export default function AppendButton({appendAction,disabled}:AppendButtonProp){
     return(
         <button
+        type="button"
         className={`
         px-6 py-1 mt-4 bg-blue-600 text-white
          rounded-lg hover:bg-blue-700 
