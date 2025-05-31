@@ -43,10 +43,10 @@ const CertificateInputs = () => {
         ))}
 
        
-            <div className='flex gap-4 items-center '>
+            <div className='flex flex-col gap-4 items-start  justify-center'>
                <AppendButton appendAction={()=>append(defaultValue)} disabled={fields.length>=3}/>
             
-        <button onClick={()=>autofillForm()}>Auto fill for sampling</button>
+        <button onClick={()=>autofillForm()} type='button' className='bg-green-500 p-1 rounded-md mt-4'>Auto fill for sampling</button>
             </div>
         </div>
         )

@@ -6,7 +6,7 @@ export type FormType={
         githubURL?:string 
         linkedinURL?:string  
     }
-    skill:string[]
+    skills:string
     projects:project[]
     experience?:experience[]
     educations:education[]

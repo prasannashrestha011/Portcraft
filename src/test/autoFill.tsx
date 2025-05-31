@@ -6,8 +6,7 @@ export const SampleFormData = {
     githubURL: "https://github.com/janedoe",
     linkedinURL: "https://www.linkedin.com/in/janedoe/"
   },
-  skill: ["JavaScript", "React", "Node.js", "TypeScript", "PostgreSQL"],
-
+  skills: "JavaScript ,React ,Node.js ,TypeScript,PostgreSQL",
   projects: [
     {
       name: "Portfolio Website",
