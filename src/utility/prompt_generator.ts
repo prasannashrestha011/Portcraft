@@ -65,7 +65,7 @@ Use the provided JSON data structure to populate ALL content. Map each field exa
 
 ***
 About: name, role, email, socialLinks.githubURL, socialLinks.linkedinURL
-Skills: Parse comma-separated skills string into individual badges
+Skills: Parse comma-separated skills string into individual badges (for displaying skills you can use icons from https://skillicons.dev/icons?i=next,react,django,python,go,js,postgresql) example
 Projects: name, description, techStack (as tags), repo URL, live URL
 Experience: company, role, duration, description
 Education: institution, degree, duration  
