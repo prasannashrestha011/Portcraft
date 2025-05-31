@@ -10,10 +10,10 @@ import React, { ReactNode } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 const CustomFormProvider = ({children}:{children:ReactNode}) => {
- 
+  const url="https://portfolio-builder-phi-three.vercel.app/api/prompt"
   const router=useRouter()
     const apiCall=async(data:string)=>{
-      const response=await axios.post(`https://portfolio-builder-phi-three.vercel.app/api/prompt`,{
+      const response=await axios.post(`${url}`,{
         prompt:data
       })
       console.log(response)

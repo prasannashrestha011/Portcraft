@@ -93,6 +93,8 @@ Provide only the complete HTML document starting with DOCTYPE html and ending wi
 
 **important**
 Do not include any explanations or descriptions, just the complete code.
+**important**
+if any of the json data is empty like experience,certification,avoid creating ui for that 
 **here is the json data ** --
 ${parsedDetails}
 `
