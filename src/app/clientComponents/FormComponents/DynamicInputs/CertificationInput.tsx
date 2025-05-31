@@ -4,15 +4,18 @@ import { certification, FormType } from '@/app/types/formType'
 import React from 'react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
 import AppendButton, { RemoveButton } from '../../Buttons'
+import { SampleFormData } from '@/test/autoFill'
 
 const defaultValue:certification={
   issuer:"",
   title:""
 }
 const CertificateInputs = () => {
-    const {register,control}=useFormContext<FormType>()
+    const {register,control,reset}=useFormContext<FormType>()
     const {fields,append,remove}=useFieldArray({control,name:"certifications"})
-  
+   const autofillForm = () => {
+    reset(SampleFormData);
+  };
      return (
        <div className="mb-8">
           <h2 className="text-xl font-semibold text-white mb-4 border-b border-gray-600 pb-2">Certification</h2>
@@ -40,9 +43,11 @@ const CertificateInputs = () => {
         ))}
 
        
-             <AppendButton appendAction={()=>append(defaultValue)} disabled={fields.length>=3}/>
+            <div className='flex gap-4 items-center '>
+               <AppendButton appendAction={()=>append(defaultValue)} disabled={fields.length>=3}/>
             
-      
+        <button onClick={()=>autofillForm()}>Auto fill for sampling</button>
+            </div>
         </div>
         )
 

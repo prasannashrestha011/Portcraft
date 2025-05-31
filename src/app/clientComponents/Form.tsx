@@ -35,7 +35,7 @@ const PortfolioBuilderForm = () => {
             >
               Generate Portfolio
             </button>
-         
+            
           </div>
         </div>
      </CustomFormProvider>
