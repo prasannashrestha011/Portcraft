@@ -1,11 +1,11 @@
-import { User } from "firebase/auth"
-import { create } from "zustand"
+import { User } from "firebase/auth";
+import { create } from "zustand";
 
-type UserStoreType={
-    user:User | null,
-    setUser:(user:User)=>void
-}
-export const useUserStore=create<UserStoreType>((set)=>({
-    user:null,
-    setUser:(user)=>set({user:user})
-})) 
+type UserStoreType = {
+  user: User | null;
+  setUser: (user: User) => void;
+};
+export const useUserStore = create<UserStoreType>((set) => ({
+  user: null,
+  setUser: (user) => set({ user: user }),
+}));

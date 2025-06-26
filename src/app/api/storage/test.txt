@@ -1,0 +1,23 @@
+  try {
+    const dbx = DropBoxClass.Init();
+    const response = await dbx.filesUpload({
+      path: "/users/jon.txt",
+      contents: "hello this is a test file for code generator ",
+    });
+    const { name, path_lower } = response.result;
+    const result: DropBoxResult = {
+      name: name,
+      path: path_lower || "",
+    };
+    return NextResponse.json({ message: result });
+  } catch (err: any) {
+    if (err && typeof err === "object") {
+      console.error("Error message:", err.message);
+
+      if ("error" in err && err.error && typeof err.error === "object") {
+        console.error("Dropbox error summary:", err.error.error_summary);
+        console.error("Full error object:", JSON.stringify(err.error, null, 2));
+      }
+    }
+    return NextResponse.json({ error: err.error.error_summary });
+  }
