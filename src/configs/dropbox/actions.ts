@@ -1,7 +1,23 @@
 import { FireStoreAdminActions } from "../firebase/actions/StorageActions";
 import DropBoxClass from "./config";
 import { DropBoxResult } from "./type";
-
+export async function ReadFiles(path: string): Promise<string> {
+  if (!path) {
+    console.log("Path not provided");
+    return "";
+  }
+  try {
+    const dbx = DropBoxClass.Init();
+    const response = await dbx.filesDownload({ path });
+    const result = response.result as any;
+    const blob = result.fileBinary;
+    const text = Buffer.from(blob).toString("utf-8");
+    return text;
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+}
 export async function UploadFiles(
   userID: string,
   fileName: string,
@@ -40,7 +56,7 @@ export async function UploadFiles(
     return Promise.reject(null);
   }
 }
-
+//uploading user's profile image
 export async function UploadImageFile(
   userID: string,
   fileName: string,

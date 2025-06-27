@@ -1,5 +1,5 @@
 import { Dropbox, DropboxAuth } from "dropbox";
-
+import fetch from "node-fetch";
 export default class DropBoxClass {
   static Init(): Dropbox {
     const auth = new DropboxAuth({

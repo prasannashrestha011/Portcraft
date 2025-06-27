@@ -1,6 +1,13 @@
-import { UploadFiles } from "@/configs/dropbox/actions";
+import { ReadFiles, UploadFiles } from "@/configs/dropbox/actions";
 import { NextRequest, NextResponse } from "next/server";
-
+//for reading files
+export async function GET(req: NextRequest) {
+  const path = getQueryParam(req, "path");
+  if (!path) return NextResponse.json({ error: "Path not provided" });
+  const string = await ReadFiles(path);
+  return NextResponse.json({ message: string });
+}
+//uploading files
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const fileName = formData.get("fileName")?.toString();
