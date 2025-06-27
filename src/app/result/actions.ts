@@ -14,7 +14,7 @@ export async function SavePortFolioData(
       "portfolio.html"
     );
     const response = await axios.post(
-      `http://localhost:3000/api/storage?userID=${userID}`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/storage?userID=${userID}`,
       formData,
       {
         headers: {
