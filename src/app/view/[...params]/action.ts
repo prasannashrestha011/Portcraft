@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function FetchCodeFile(path: string): Promise<string> {
   if (!path) return "";
-  const url = `http://localhost:3000/api/storage?path=${path}`;
+  const url = `${process.env.NEXT_PUBLIC_ROOT_URL}/api/storage?path=${path}`;
   try {
     const response = await axios.get(url);
     if (response.status !== 200) {
