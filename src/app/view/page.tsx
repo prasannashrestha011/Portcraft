@@ -1,32 +1,16 @@
 "use client";
 import { useResultStore } from "@/store/resultStore";
-import { useUserStore } from "@/store/userStore";
 import Link from "next/link";
 import React from "react";
-import { SavePortFolioData } from "./actions";
 
-const ResultPage = () => {
-  const rawHTML = useResultStore((state) => state.resultHTML);
-  const { user } = useUserStore();
-  const cleanedHTML = rawHTML
+const ViewPage = () => {
+  const { resultHTML } = useResultStore();
+  const cleanedHTML = resultHTML
     .replace(/^```[a-zA-Z]*\n?/, "") // remove starting ```
     .replace(/```$/, "");
-  const uploadHandler = async () => {
-    if (!user) return;
-    await SavePortFolioData(cleanedHTML, user?.uid);
-  };
   return (
     <div className="bg-blue-800 h-svh sora-regular">
       <header className="flex  flex-col justify-center items-center pt-3">
-        <h1 className="text-3xl md:text-4xl font-bold mb-2 flex items-center gap-2">
-          <span role="img" aria-label="confetti">
-            🎉
-          </span>
-          Congratulations!
-          <span role="img" aria-label="confetti">
-            🎉
-          </span>
-        </h1>
         <p className="text-lg  w-fit mx-auto  md:text-xl">
           You&apos;ve successfully created your portfolio!
         </p>
@@ -43,15 +27,9 @@ const ResultPage = () => {
         >
           View the full page
         </Link>
-        <button
-          className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
-          onClick={() => uploadHandler()}
-        >
-          Save
-        </button>
       </main>
     </div>
   );
 };
 
-export default ResultPage;
+export default ViewPage;

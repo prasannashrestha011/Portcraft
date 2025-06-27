@@ -26,7 +26,10 @@ export async function UploadFiles(
 ): Promise<DropBoxResult> {
   try {
     const dbx = DropBoxClass.Init();
-    const uniqueId = `${fileName}_${Date.now()}.txt`;
+    const timestampRegex = /_\d{13}\.txt$/;
+    const uniqueId = timestampRegex.test(fileName)
+      ? fileName
+      : `${fileName}_${Date.now()}.txt`;
     const response = await dbx.filesUpload({
       path: `/users/${userID}/${uniqueId}`,
       contents: fileContent,

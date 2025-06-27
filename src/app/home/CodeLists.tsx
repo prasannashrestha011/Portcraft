@@ -4,6 +4,7 @@ import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { PortfolioMeta } from "../types/firestoreTypes";
 import moment from "moment";
+import Link from "next/link";
 
 const CodeLists = () => {
   const { user } = useUserStore();
@@ -39,10 +40,12 @@ const CodeLists = () => {
     <div>
       <ul className="flex gap-2">
         {portfolioMetaList.map((doc, idx) => (
-          <div key={idx}>
-            <span>{doc.fileName}</span>
-            <span>{moment.utc(doc.createdAt).fromNow()}</span>
-          </div>
+          <Link key={idx} href={`/view/${doc.ref}`}>
+            <div className="border h-52">
+              <span>{doc.fileName}</span>
+              <span>{moment.utc(doc.createdAt).fromNow()}</span>
+            </div>
+          </Link>
         ))}
       </ul>
     </div>
