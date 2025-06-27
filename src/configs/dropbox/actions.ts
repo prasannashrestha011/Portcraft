@@ -9,6 +9,7 @@ export async function ReadFiles(path: string): Promise<string> {
   try {
     const dbx = DropBoxClass.Init();
     const response = await dbx.filesDownload({ path });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = response.result as any;
     const blob = result.fileBinary;
     const text = Buffer.from(blob).toString("utf-8");
