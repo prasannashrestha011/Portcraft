@@ -5,6 +5,10 @@ export async function SavePortFolioData(
   userID: string,
   fileName = "portfolio.txt"
 ): Promise<boolean> {
+  if (fileName !== "portfolio.txt") {
+    return false;
+  }
+  console.log("FILENAME TO BE SVE ", fileName);
   try {
     const formData = new FormData();
     formData.append("fileName", fileName);

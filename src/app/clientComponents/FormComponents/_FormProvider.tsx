@@ -10,15 +10,16 @@ import { FormProvider, useForm } from "react-hook-form";
 import LoadingStepper from "../Steppers/LoadingStepper";
 
 const CustomFormProvider = ({ children }: { children: ReactNode }) => {
-  const url = "https://portfolio-builder-phi-three.vercel.app/api/prompt";
-  // const localurl = "http://localhost:3000/api/prompt";
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [activeStep, setActiveStep] = useState<number>(0);
   const router = useRouter();
   const apiCall = async (data: string) => {
-    const response = await axios.post(`${url}`, {
-      prompt: data,
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/prompt`,
+      {
+        prompt: data,
+      }
+    );
     console.log(response);
     return response.data;
   };

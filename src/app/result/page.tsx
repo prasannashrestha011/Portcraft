@@ -2,21 +2,42 @@
 import { useResultStore } from "@/store/resultStore";
 import { useUserStore } from "@/store/userStore";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { SavePortFolioData } from "./actions";
+import SignInModel from "../clientComponents/Models/SignInModel";
+import LoadingSpinner from "../clientComponents/LoadingSpinner";
 
 const ResultPage = () => {
   const rawHTML = useResultStore((state) => state.resultHTML);
   const { user } = useUserStore();
+  const [showAuthModel, setShowAuthModel] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
   const cleanedHTML = rawHTML
     .replace(/^```[a-zA-Z]*\n?/, "") // remove starting ```
     .replace(/```$/, "");
   const uploadHandler = async () => {
-    if (!user) return;
-    await SavePortFolioData(cleanedHTML, user?.uid);
+    if (!user) {
+      setShowAuthModel(true);
+      return;
+    }
+    setIsLoading(true);
+    const saveStatus = await SavePortFolioData(cleanedHTML, user?.uid);
+    setIsSaved(saveStatus);
+    setIsLoading(false);
   };
   return (
     <div className="bg-blue-800 h-svh sora-regular">
+      {user && (
+        <nav className=" flex justify-end gap-2 items-center pt-2">
+          <span>
+            {user.photoURL && (
+              <img className="w-9 rounded-full" src={user?.photoURL} />
+            )}
+          </span>
+          <span>{user.displayName}</span>
+        </nav>
+      )}
       <header className="flex  flex-col justify-center items-center pt-3">
         <h1 className="text-3xl md:text-4xl font-bold mb-2 flex items-center gap-2">
           <span role="img" aria-label="confetti">
@@ -43,12 +64,23 @@ const ResultPage = () => {
         >
           View the full page
         </Link>
-        <button
-          className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
-          onClick={() => uploadHandler()}
-        >
-          Save
-        </button>
+        <div className="mt-5">
+          {isLoading && <LoadingSpinner />}
+
+          {!isLoading && isSaved && <span>Saved</span>}
+
+          {!isLoading && !isSaved && (
+            <button
+              className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
+              onClick={uploadHandler}
+            >
+              Save
+            </button>
+          )}
+        </div>
+        {showAuthModel && (
+          <SignInModel open={showAuthModel} setOpen={setShowAuthModel} />
+        )}
       </main>
     </div>
   );

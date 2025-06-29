@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FetchCodeFile } from "../action";
+import { FetchCodeFile } from "../../../action";
 import { CleanedHTML } from "@/utility/unescapeJsonstring";
 
 export function useCodeLoader(path: string[]) {
