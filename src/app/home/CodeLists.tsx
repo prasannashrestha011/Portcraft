@@ -4,7 +4,6 @@ import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { PortfolioMeta } from "../types/firestoreTypes";
 import FileCard from "../clientComponents/Cards/FileCard";
-
 const CodeLists = () => {
   const { user } = useUserStore();
 
@@ -37,7 +36,7 @@ const CodeLists = () => {
   }
   return (
     <div>
-      <ul className="border border-gray-600 grid grid-cols-1 md:grid-cols-4 gap-2">
+      <ul className="grid grid-cols-1 md:grid-cols-3 gap-2 mx-auto w-10/12   p-2 ">
         {portfolioMetaList.map((doc, idx) => (
           <FileCard
             key={idx}
