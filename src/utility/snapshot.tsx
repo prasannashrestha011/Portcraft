@@ -18,7 +18,7 @@ export async function getSnapshot(path: string) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          url: "https://portfolio-builder-phi-three.vercel.app/",
+          url: path,
           gotoOptions: {
             waitUntil: "networkidle2", // Wait for network stability
             timeout: 30000, // 30s timeout
