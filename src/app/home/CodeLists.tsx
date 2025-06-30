@@ -41,6 +41,7 @@ const CodeLists = () => {
           <FileCard
             key={idx}
             ref={doc.ref}
+            snapshotURL={doc.snapshotURL}
             fileName={doc.fileName.split("_")[0]}
             createdAt={doc.createdAt}
           />

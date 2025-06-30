@@ -22,8 +22,12 @@ const ViewPage = () => {
   const handleSave = async () => {
     const cleanedHTML = CleanedHTML(newCode);
     if (!user) return;
-    const isSaved = await SavePortFolioData(cleanedHTML, user?.uid, filePath);
-    setIsSaved(isSaved);
+    const { status } = await SavePortFolioData(
+      cleanedHTML,
+      user?.uid,
+      filePath
+    );
+    setIsSaved(status);
   };
   useEffect(() => {
     console.log("FILENAME ", fileName);

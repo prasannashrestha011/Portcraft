@@ -31,14 +31,15 @@ export async function UploadFiles(
       ? fileName
       : `${fileName}_${Date.now()}.txt`;
     const response = await dbx.filesUpload({
-      path: `/users/${userID}/${uniqueId}`,
+      path: `/users/${userID}/portfolios/${uniqueId}`,
       contents: fileContent,
       mode: { ".tag": "overwrite" },
     });
-    const { name, path_lower } = response.result;
+    const { name, path_lower, path_display } = response.result;
     const result: DropBoxResult = {
       name: name,
-      path: path_lower!,
+      lower_path: path_lower!,
+      path_display: path_display!,
     };
     await FireStoreAdminActions.UploadFileRefs(
       userID,
@@ -62,8 +63,7 @@ export async function UploadFiles(
 }
 //uploading user's profile image
 export async function UploadImageFile(
-  userID: string,
-  fileName: string,
+  fullPath: string,
   fileContent: Buffer
 ): Promise<string> {
   try {
@@ -71,7 +71,7 @@ export async function UploadImageFile(
 
     // 1. Upload (overwrite if exists)
     const response = await dbx.filesUpload({
-      path: `/users/${userID}/${fileName}`,
+      path: `${fullPath}.png`,
       contents: fileContent,
       mode: { ".tag": "overwrite" },
     });

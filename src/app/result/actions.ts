@@ -1,12 +1,15 @@
 import axios from "axios";
-
+interface ReturnProp {
+  status: boolean;
+  path: string;
+}
 export async function SavePortFolioData(
   cleanedHTML: string,
   userID: string,
   fileName = "portfolio.txt"
-): Promise<boolean> {
+): Promise<ReturnProp> {
   if (fileName !== "portfolio.txt") {
-    return false;
+    return { status: false, path: "" };
   }
   console.log("FILENAME TO BE SVE ", fileName);
   try {
@@ -26,9 +29,9 @@ export async function SavePortFolioData(
         },
       }
     );
-    return response.status == 200;
+    return { status: response.status == 200, path: response.data.path };
   } catch (err) {
     console.error(err);
-    return false;
+    return { status: false, path: "" };
   }
 }

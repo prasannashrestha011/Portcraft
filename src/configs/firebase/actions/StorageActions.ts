@@ -27,8 +27,19 @@ export class FireStoreAdminActions {
       .doc(`${uniqueId}`)
       .set({
         fileName: fileName,
+        snapshotURL: "",
         createdAt: Date.now(),
+        updatedAt: Date.now(),
         ref: path,
       });
+  }
+  static async UpdateFileDoc(path: string, snapshotURL: string) {
+    await this.db.doc(path).set(
+      {
+        snapshotURL,
+        updatedAt: Date.now(),
+      },
+      { merge: true } // ✅ Only update these fields; don't overwrite
+    );
   }
 }

@@ -1,4 +1,5 @@
 export type DropBoxResult = {
   name: string;
-  path: string;
+  lower_path: string;
+  path_display: string;
 };

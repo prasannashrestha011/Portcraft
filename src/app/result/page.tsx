@@ -22,8 +22,8 @@ const ResultPage = () => {
       return;
     }
     setIsLoading(true);
-    const saveStatus = await SavePortFolioData(cleanedHTML, user?.uid);
-    setIsSaved(saveStatus);
+    const { status } = await SavePortFolioData(cleanedHTML, user?.uid);
+    setIsSaved(status);
     setIsLoading(false);
   };
   return (
@@ -69,14 +69,12 @@ const ResultPage = () => {
 
           {!isLoading && isSaved && <span>Saved</span>}
 
-          {!isLoading && !isSaved && (
-            <button
-              className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
-              onClick={uploadHandler}
-            >
-              Save
-            </button>
-          )}
+          <button
+            className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
+            onClick={uploadHandler}
+          >
+            Save
+          </button>
         </div>
         {showAuthModel && (
           <SignInModel open={showAuthModel} setOpen={setShowAuthModel} />

@@ -1,23 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from "cookie";
 import { admin } from "@/configs/firebase/firebase-admin";
-import { UserMetaData } from "@/app/login/type";
-import { UploadImageFile } from "@/configs/dropbox/actions";
-import { FireStoreAdminActions } from "@/configs/firebase/actions/StorageActions";
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { token, userMetaData } = body;
-  const { uid, photoURL } = userMetaData as UserMetaData;
-  const imgResponse = await fetch(photoURL);
-  const arrayBuffer = await imgResponse.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-  const shareableUrl = await UploadImageFile(uid, "photourl.png", buffer);
-  const metaData: UserMetaData = {
-    ...userMetaData,
-    photoURL: shareableUrl,
-  };
-  await FireStoreAdminActions.UploadDoc(metaData, "/profile");
+  const { token } = body;
   try {
     const decoded = await admin.auth().verifyIdToken(token);
     if (!decoded) {

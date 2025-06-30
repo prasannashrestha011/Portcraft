@@ -9,10 +9,16 @@ import Link from "next/link";
 interface MediaProp {
   fileName: string;
   fileURL?: string;
+  snapshotURL: string;
   createdAt: Date;
   ref: string;
 }
-export default function FileCard({ fileName, createdAt, ref }: MediaProp) {
+export default function FileCard({
+  fileName,
+  snapshotURL,
+  createdAt,
+  ref,
+}: MediaProp) {
   return (
     <Card
       sx={{
@@ -28,7 +34,13 @@ export default function FileCard({ fileName, createdAt, ref }: MediaProp) {
         },
       }}
     >
-      <CardContent sx={{ pb: 1 }}>
+      <CardContent
+        sx={{ pb: 1 }}
+        className="flex flex-col justify-center items-center"
+      >
+        <Typography>
+          <img src={snapshotURL} className="w-64" />
+        </Typography>
         <Typography
           variant="h6"
           component="div"
