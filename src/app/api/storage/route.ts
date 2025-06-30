@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     fileName,
     fileContent
   );
-  const url = `http://localhost:3000/view${lower_path}`;
+  const url = `${process.env.ROOT_URL}/view/${lower_path}`;
   console.log("LOWER PATH ", lower_path);
   const buffer = await getSnapshot(url);
   if (!buffer) return;
