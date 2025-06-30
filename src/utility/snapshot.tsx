@@ -1,17 +1,45 @@
-import pup from "puppeteer";
 export async function getSnapshot(path: string) {
-  if (!path) return;
-  const browser = await pup.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  if (!path) return null;
 
-  const newPage = await browser.newPage();
-  await newPage.goto(path, { waitUntil: "networkidle2" });
-  const buffer = (await newPage.screenshot({
-    fullPage: true,
-    type: "png",
-  })) as Buffer;
-  await browser.close();
-  return buffer;
+  const apiKey = process.env.BROWSERLESS_API_KEY;
+  if (!apiKey) {
+    console.error("BROWSERLESS_API_KEY is not set");
+    return null;
+  }
+
+  console.log("Taking screenshot of:", path);
+
+  try {
+    const res = await fetch(
+      `https://production-sfo.browserless.io/screenshot?token=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: "https://portfolio-builder-phi-three.vercel.app/",
+          gotoOptions: {
+            waitUntil: "networkidle2", // Wait for network stability
+            timeout: 30000, // 30s timeout
+          },
+          options: {
+            fullPage: true,
+          },
+          // Use only the minimal required options
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Screenshot API Error:", res.status, errorText);
+      return null;
+    }
+
+    return res.arrayBuffer();
+  } catch (err) {
+    console.error("Screenshot error:", err);
+    return null;
+  }
 }

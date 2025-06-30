@@ -36,7 +36,8 @@ export async function POST(req: NextRequest) {
   console.log("LOWER PATH ", lower_path);
   const buffer = await getSnapshot(url);
   if (!buffer) return;
-  const snapurl = await UploadImageFile(lower_path, buffer);
+  const arrayBuffer = Buffer.from(buffer);
+  const snapurl = await UploadImageFile(lower_path, arrayBuffer);
   await FireStoreAdminActions.UpdateFileDoc(path_display, snapurl);
   console.log(snapurl);
   return NextResponse.json({ name, lower_path, snapurl });
