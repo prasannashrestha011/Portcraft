@@ -1,4 +1,4 @@
-import { FireStoreAdminActions } from "../firebase/actions/StorageActions";
+import { FireStoreAdminActions } from "../firebase/actions/AdminAction";
 import DropBoxClass from "./config";
 import { DropBoxResult } from "./type";
 export async function ReadFiles(path: string): Promise<string> {
@@ -35,11 +35,10 @@ export async function UploadFiles(
       contents: fileContent,
       mode: { ".tag": "overwrite" },
     });
-    const { name, path_lower, path_display } = response.result;
+    const { name, path_lower } = response.result;
     const result: DropBoxResult = {
       name: name,
       lower_path: path_lower!,
-      path_display: path_display!,
     };
     await FireStoreAdminActions.UploadFileRefs(
       userID,

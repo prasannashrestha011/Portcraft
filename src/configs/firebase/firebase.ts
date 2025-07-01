@@ -10,6 +10,6 @@ const firebaseConfig = JSON.parse(
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 const auth = getAuth(app);
-const firestore = getFirestore(app);
+const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
-export { app, auth, firestore, googleProvider };
+export { app, auth, db, googleProvider };

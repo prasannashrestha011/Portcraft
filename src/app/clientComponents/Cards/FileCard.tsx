@@ -12,12 +12,14 @@ interface MediaProp {
   snapshotURL: string;
   createdAt: Date;
   ref: string;
+  onDelete: (ref: string) => void;
 }
 export default function FileCard({
   fileName,
   snapshotURL,
   createdAt,
   ref,
+  onDelete,
 }: MediaProp) {
   return (
     <Card
@@ -39,7 +41,10 @@ export default function FileCard({
         className="flex flex-col justify-center items-center"
       >
         <Typography>
-          <img src={snapshotURL} className="w-64" />
+          <img
+            src={snapshotURL || "https://placehold.co/600x400?text=No+Preview"}
+            className="w-64"
+          />
         </Typography>
         <Typography
           variant="h6"
@@ -97,6 +102,8 @@ export default function FileCard({
             Preview
           </Button>
         </Link>
+
+        <Button onClick={() => onDelete(ref)}>Delete</Button>
       </CardActions>
     </Card>
   );

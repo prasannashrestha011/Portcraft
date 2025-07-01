@@ -3,7 +3,7 @@ import {
   UploadFiles,
   UploadImageFile,
 } from "@/configs/dropbox/actions";
-import { FireStoreAdminActions } from "@/configs/firebase/actions/StorageActions";
+import { FireStoreAdminActions } from "@/configs/firebase/actions/AdminAction";
 import { getSnapshot } from "@/utility/snapshot";
 import { NextRequest, NextResponse } from "next/server";
 //for reading files
@@ -27,18 +27,17 @@ export async function POST(req: NextRequest) {
   }
 
   const fileContent = await file.text();
-  const { name, lower_path, path_display } = await UploadFiles(
-    userID,
-    fileName,
+  const { name, lower_path } = await UploadFiles(
+    userID.toLowerCase(),
+    fileName.toLowerCase(),
     fileContent
   );
   const url = `${process.env.ROOT_URL}/view/${lower_path}`;
-  console.log("LOWER PATH ", lower_path);
   const buffer = await getSnapshot(url);
   if (!buffer) return;
   const arrayBuffer = Buffer.from(buffer);
   const snapurl = await UploadImageFile(lower_path, arrayBuffer);
-  await FireStoreAdminActions.UpdateFileDoc(path_display, snapurl);
+  await FireStoreAdminActions.UpdateFileDoc(lower_path, snapurl);
   console.log(snapurl);
   return NextResponse.json({ name, lower_path, snapurl });
 }
