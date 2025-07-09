@@ -5,7 +5,8 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import moment from "moment";
 import Link from "next/link";
-import { BezelButton } from "@shadeui/ui";
+import { BezelButton, BezelDeleteButton } from "../Buttons/Bezel";
+import { Pen, Trash } from "lucide-react";
 interface MediaProp {
   fileName: string;
   fileURL?: string;
@@ -70,14 +71,15 @@ export default function FileCard({
       </CardContent>
       <CardActions sx={{ pt: 0, pb: 2, px: 2 }}>
         <Link href={`/view/editor/${ref}`} passHref>
-          <BezelButton label="edit" color="blue" size="sm" />
+          <BezelButton className="py-2 px-3 text-xs font-bold ">
+            <Pen size={12} />
+            <span>Edit</span>
+          </BezelButton>
         </Link>
-        <BezelButton
-          label="Delete"
-          color="danger"
-          size="sm"
-          onClick={() => onDelete(ref)}
-        />
+        <BezelDeleteButton onClick={() => onDelete(ref)}>
+          <Trash size={12} />
+          <span>Delete</span>
+        </BezelDeleteButton>
         <Link
           href={`/view/${ref}`}
           passHref

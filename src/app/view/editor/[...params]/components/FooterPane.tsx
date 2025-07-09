@@ -1,4 +1,7 @@
-import { BezelButton } from "@shadeui/ui";
+import {
+  BezelButton,
+  BezelDeleteButton,
+} from "@/app/clientComponents/Buttons/Bezel";
 import React from "react";
 interface FooterPaneProp {
   isSaved: boolean;
@@ -6,17 +9,12 @@ interface FooterPaneProp {
   newCode: string;
 }
 const FooterPane: React.FC<FooterPaneProp> = ({ newCode, isSaved, action }) => {
+  console.log(newCode);
   return (
     <div>
-      <BezelButton label="Cancel" color="danger" className="mr-2" />
+      <BezelDeleteButton className="mr-2">Cancel</BezelDeleteButton>
 
-      {!isSaved && (
-        <BezelButton
-          label="Save"
-          onClick={() => action()}
-          disabled={!newCode}
-        />
-      )}
+      {!isSaved && <BezelButton onClick={() => action()}>Save</BezelButton>}
     </div>
   );
 };

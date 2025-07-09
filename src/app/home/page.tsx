@@ -7,9 +7,9 @@ import CodeLists from "./CodeLists";
 import { FullPageLoadingSpinner } from "../clientComponents/LoadingSpinner";
 import { IoAdd } from "react-icons/io5";
 
-import { BezelButton } from "@shadeui/ui";
 import Link from "next/link";
 import { HomeMenu } from "../clientComponents/Menu/HomeMenu";
+import { BezelButton } from "../clientComponents/Buttons/Bezel";
 
 const HomePage = () => {
   const { user, setUser } = useUserStore();
@@ -34,12 +34,10 @@ const HomePage = () => {
         </section>
         <section className="flex justify-end items-center mr-8">
           <Link href={"/create"} passHref>
-            <BezelButton
-              color="blue"
-              label="Create"
-              size="md"
-              leftIcon={<IoAdd />}
-            />
+            <BezelButton>
+              <span>Create</span>
+              <IoAdd size={14} />
+            </BezelButton>
           </Link>
         </section>
       </nav>

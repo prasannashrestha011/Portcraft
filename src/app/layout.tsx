@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "@shadeui/ui/styles.css";
 import "./globals.css";
 import { AuthListener } from "./clientComponents/AuthListener";
 
