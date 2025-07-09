@@ -18,22 +18,22 @@
   font-style: normal;
   src: url("/fonts/Sora-Regular.ttf") format("truetype");
 }
-@font-face{
+@font-face {
   font-family: "sora-semibold";
   font-style: normal;
-  src: url("/fonts/Sora-SemiBold.ttf")format("truetype");
+  src: url("/fonts/Sora-SemiBold.ttf") format("truetype");
 }
-.sora-regular{
-  font-family: "sora-regular",'sans';
+.sora-regular {
+  font-family: "sora-regular", "sans";
 }
-.sora-semibold{
-  font-family: "sora-semibold","sans";
+.sora-semibold {
+  font-family: "sora-semibold", "sans";
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    font-family:"sora-regular",'sans';
+    font-family: "sora-regular", "sans";
   }
 }
 

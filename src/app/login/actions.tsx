@@ -1,12 +1,9 @@
 "use client";
-import { Button } from "@mui/material";
+import { auth } from "@/configs/firebase/firebase";
 import axios from "axios";
-import { Auth, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-interface AuthProp {
-  auth: Auth;
-}
-export function SignOut({ auth }: AuthProp) {
+export function SignOut() {
   const nav = useRouter();
   const handleLogOut = async () => {
     try {
@@ -17,5 +14,13 @@ export function SignOut({ auth }: AuthProp) {
       console.log("Logout error-> ", err);
     }
   };
-  return <Button onClick={() => handleLogOut()}>SignOut</Button>;
+  return (
+    <button
+      className="group flex w-full items-center gap-2 rounded-lg
+      font-light bg-red-700 hover:bg-red-900 px-3 py-1.5 data-focus:bg-white/10"
+      onClick={() => handleLogOut()}
+    >
+      Logout
+    </button>
+  );
 }

@@ -14,7 +14,7 @@ const CodeLists = () => {
     : null;
 
   const [portfolioMetaList, setPortFolioMetaList] = useState<PortfolioMeta[]>(
-    []
+    [],
   );
   const loadMetaList = async () => {
     if (!portfoliosRef) return;
@@ -48,7 +48,7 @@ const CodeLists = () => {
             key={idx}
             ref={doc.ref}
             snapshotURL={doc.snapshotURL}
-            fileName={doc.fileName.split("_")[0]}
+            fileName={doc.fileName}
             createdAt={doc.createdAt}
             onDelete={handleDelete}
           />

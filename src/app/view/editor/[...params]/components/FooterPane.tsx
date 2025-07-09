@@ -1,3 +1,4 @@
+import { BezelButton } from "@shadeui/ui";
 import React from "react";
 interface FooterPaneProp {
   isSaved: boolean;
@@ -7,19 +8,14 @@ interface FooterPaneProp {
 const FooterPane: React.FC<FooterPaneProp> = ({ newCode, isSaved, action }) => {
   return (
     <div>
-      <button className="bg-red-600 hover:bg-red-400 p-2 rounded-md">
-        Cancel
-      </button>
+      <BezelButton label="Cancel" color="danger" className="mr-2" />
+
       {!isSaved && (
-        <button
+        <BezelButton
+          label="Save"
           onClick={() => action()}
-          className={`${
-            !newCode ? "bg-green-100" : "bg-green-600"
-          }  p-2 rounded-md ${!newCode && "bg-green-300"}`}
           disabled={!newCode}
-        >
-          Save
-        </button>
+        />
       )}
     </div>
   );
