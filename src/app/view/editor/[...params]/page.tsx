@@ -23,8 +23,12 @@ const ViewPage = () => {
 
   const { fetchedCode, newCode, setNewCode } = useCodeLoader(path);
   const handleSave = async () => {
+    console.log("CALLING API");
     const cleanedHTML = CleanedHTML(newCode);
-    if (!user) return;
+    if (!user) {
+      console.log("No user");
+      return;
+    }
     const { status } = await SavePortFolioData(
       cleanedHTML,
       user?.uid,

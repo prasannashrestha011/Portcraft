@@ -6,11 +6,8 @@ interface ReturnProp {
 export async function SavePortFolioData(
   cleanedHTML: string,
   userID: string,
-  fileName = "portfolio.txt"
+  fileName = "portfolio.txt",
 ): Promise<ReturnProp> {
-  if (fileName !== "portfolio.txt") {
-    return { status: false, path: "" };
-  }
   console.log("FILENAME TO BE SVE ", fileName);
   try {
     const formData = new FormData();
@@ -18,7 +15,7 @@ export async function SavePortFolioData(
     formData.append(
       "file",
       new Blob([cleanedHTML], { type: "text/plain" }),
-      "portfolio.html"
+      fileName,
     );
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_ROOT_URL}/api/storage?userID=${userID}`,
@@ -27,7 +24,7 @@ export async function SavePortFolioData(
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     return { status: response.status == 200, path: response.data.path };
   } catch (err) {

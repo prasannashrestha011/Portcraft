@@ -22,15 +22,16 @@ export async function POST(req: NextRequest) {
   if (!fileName || !file || !(file instanceof File) || !userID) {
     return NextResponse.json(
       { error: "No file uploaded or wrong format" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   const fileContent = await file.text();
+  console.log(fileContent);
   const { name, lower_path } = await UploadFiles(
     userID.toLowerCase(),
     fileName.toLowerCase(),
-    fileContent
+    fileContent,
   );
   const url = `${process.env.ROOT_URL}/view/${lower_path}`;
   const buffer = await getSnapshot(url);
