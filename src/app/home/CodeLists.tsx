@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { PortfolioMeta } from "../types/firestoreTypes";
 import FileCard from "../clientComponents/Cards/FileCard";
 import { deleteDocByPath } from "@/configs/firebase/actions/ClientActions";
+import { toast } from "react-toastify";
 const CodeLists = () => {
   const { user } = useUserStore();
 
@@ -14,8 +15,12 @@ const CodeLists = () => {
     : null;
 
   const [portfolioMetaList, setPortFolioMetaList] = useState<PortfolioMeta[]>(
-    [],
+    []
   );
+  const notify = (fileName: string) =>
+    toast(`${fileName} has been deleted`, {
+      theme: "dark",
+    });
   const loadMetaList = async () => {
     if (!portfoliosRef) return;
     const snapShots = await getDocs(portfoliosRef);
@@ -29,9 +34,10 @@ const CodeLists = () => {
     console.log(list);
     setPortFolioMetaList(list);
   };
-  const handleDelete = async (ref: string) => {
+  const handleDelete = async (ref: string, fileName: string) => {
     if (!ref) return;
     await deleteDocByPath(ref);
+    notify(fileName);
     setPortFolioMetaList((prev) => prev.filter((doc) => doc.ref != ref));
   };
   useEffect(() => {

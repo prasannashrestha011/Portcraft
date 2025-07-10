@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthListener } from "./clientComponents/AuthListener";
-
+import { ToastContainer } from "react-toastify";
 export const metadata: Metadata = {
   title: "Portfolio Builder",
   description:
@@ -17,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthListener />
+        <ToastContainer />
         {children}
       </body>
     </html>

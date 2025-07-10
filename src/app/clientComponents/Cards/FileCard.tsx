@@ -13,7 +13,7 @@ interface MediaProp {
   snapshotURL: string;
   createdAt: Date;
   ref: string;
-  onDelete: (ref: string) => void;
+  onDelete: (ref: string, fileName: string) => void;
 }
 export default function FileCard({
   fileName,
@@ -76,7 +76,7 @@ export default function FileCard({
             <span>Edit</span>
           </BezelButton>
         </Link>
-        <BezelDeleteButton onClick={() => onDelete(ref)}>
+        <BezelDeleteButton onClick={() => onDelete(ref, fileName)}>
           <Trash size={12} />
           <span>Delete</span>
         </BezelDeleteButton>

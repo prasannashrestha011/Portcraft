@@ -6,13 +6,17 @@ import React, { useState } from "react";
 import { SavePortFolioData } from "./actions";
 import SignInModel from "../clientComponents/Models/SignInModel";
 import LoadingSpinner from "../clientComponents/LoadingSpinner";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 const ResultPage = () => {
+  const router = useRouter();
   const rawHTML = useResultStore((state) => state.resultHTML);
   const { user } = useUserStore();
   const [showAuthModel, setShowAuthModel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const notify = () => toast("File has been saved", { theme: "dark" });
   const cleanedHTML = rawHTML
     .replace(/^```[a-zA-Z]*\n?/, "") // remove starting ```
     .replace(/```$/, "");
@@ -25,7 +29,12 @@ const ResultPage = () => {
     const { status } = await SavePortFolioData(cleanedHTML, user?.uid);
     setIsSaved(status);
     setIsLoading(false);
+    notify();
+    router.replace("/home");
   };
+  if (!rawHTML) {
+    return <div>Page not found</div>;
+  }
   return (
     <div className="bg-blue-800 h-svh sora-regular">
       {user && (

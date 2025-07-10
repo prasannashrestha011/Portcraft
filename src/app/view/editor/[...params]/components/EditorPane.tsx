@@ -37,7 +37,9 @@ const EditorPane: React.FC<EditorPaneProp> = ({ fetchedCode, setNewCode }) => {
     };
   }, [fetchedCode]);
 
-  return <div ref={editorRef} className="h-full w-6/12 overflow-y-auto"></div>;
+  return (
+    <div ref={editorRef} className="h-full md:w-6/12 overflow-y-auto"></div>
+  );
 };
 
 export default EditorPane;

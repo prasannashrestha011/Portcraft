@@ -11,7 +11,7 @@ interface FooterPaneProp {
 const FooterPane: React.FC<FooterPaneProp> = ({ newCode, isSaved, action }) => {
   console.log(newCode);
   return (
-    <div>
+    <div className="flex gap-2">
       <BezelDeleteButton className="mr-2">Cancel</BezelDeleteButton>
 
       {!isSaved && <BezelButton onClick={() => action()}>Save</BezelButton>}

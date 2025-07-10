@@ -9,7 +9,10 @@ import PreviewPane from "./components/PreviewPane";
 import { useCodeLoader } from "./components/CodeLoader";
 import FooterPane from "./components/FooterPane";
 import { FullPageLoadingSpinner } from "@/app/clientComponents/LoadingSpinner";
+import { SiSnapcraft } from "react-icons/si";
+import { IoIosWarning } from "react-icons/io";
 import FileRenameInterface from "./components/RenameInterface";
+import Link from "next/link";
 const ViewPage = () => {
   const param = useParams();
   const { user } = useUserStore();
@@ -25,7 +28,7 @@ const ViewPage = () => {
     const { status } = await SavePortFolioData(
       cleanedHTML,
       user?.uid,
-      filePath
+      filePath,
     );
     setIsSaved(status);
   };
@@ -39,15 +42,26 @@ const ViewPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900">
+    <div className="relative min-h-screen flex flex-col justify-center items-center bg-gray-900">
+      <Link href={"/home"}>
+        <SiSnapcraft className="absolute left-5 md:top-1 top-10 md:text-4xl text-xl" />
+      </Link>
+      <p className="w-full md:hidden relative flex items-center justify-center  bg-gradient-to-r from-amber-400 to-orange-500 border-l-4 border-orange-600 shadow-lg">
+        <IoIosWarning size={19} />
+        <span className="text-white">
+          Please use a desktop for the best experience.
+        </span>
+      </p>
       <header className="w-full flex flex-col items-center justify-center ">
         <FileRenameInterface filePath={path.join("/")} />
         <div className="w-10/12  flex justify-center  sora-regular mt-4 ">
           <span className="w-6/12 text-center">Editor</span>
-          <span className="flex-1 text-center">Live preview</span>
+          <Link href={`/view/${path.join("/")}`} className="flex-1 text-center">
+            Live preview
+          </Link>
         </div>
       </header>
-      <main className=" flex min-h-screen  h-screen w-10/12 border over border-yellow-400">
+      <main className=" flex md:flex-row flex-col min-h-screen  h-screen w-10/12 border over border-yellow-400">
         <EditorPane fetchedCode={fetchedCode} setNewCode={setNewCode} />
         <PreviewPane code={newCode} />
       </main>
