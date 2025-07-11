@@ -13,6 +13,8 @@ import { SiSnapcraft } from "react-icons/si";
 import { IoIosWarning } from "react-icons/io";
 import FileRenameInterface from "./components/RenameInterface";
 import Link from "next/link";
+import { SquareArrowOutUpRight } from "lucide-react";
+
 const ViewPage = () => {
   const param = useParams();
   const { user } = useUserStore();
@@ -24,6 +26,7 @@ const ViewPage = () => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const { fetchedCode, newCode, setNewCode } = useCodeLoader(path);
+
   const handleSave = async () => {
     console.log("CALLING API");
     const cleanedHTML = CleanedHTML(newCode);
@@ -49,7 +52,7 @@ const ViewPage = () => {
   }
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center bg-gray-900">
+    <div className="relative min-h-screen flex p-2 flex-col justify-center items-center bg-gray-900">
       <Link href={"/home"}>
         <SiSnapcraft className="absolute left-5 md:top-1 top-10 md:text-4xl text-xl" />
       </Link>
@@ -65,19 +68,32 @@ const ViewPage = () => {
           fileName={fileName}
           setFileName={setFileName}
         />
-        <div className="w-10/12  flex justify-center  sora-regular mt-4 ">
+        <div className="w-full  flex justify-center  sora-regular mt-4 ">
           <span className="w-6/12 text-center">Editor</span>
-          <Link href={`/view/${path.join("/")}`} className="flex-1 text-center">
-            Live preview
-          </Link>
+          <div className=" flex justify-between flex-1 text-center">
+            <span className="flex-1 ">Live Preview</span>
+
+            <Link
+              href={`/view/${path.join("/")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <SquareArrowOutUpRight />
+            </Link>
+          </div>
         </div>
       </header>
-      <main className=" flex md:flex-row flex-col min-h-screen  h-screen w-10/12 border over border-yellow-400">
+      <main className=" flex md:flex-row flex-col min-h-screen  h-screen w-full  border over border-yellow-400">
         <EditorPane fetchedCode={fetchedCode} setNewCode={setNewCode} />
         <PreviewPane code={newCode} />
       </main>
       <footer className="w-10/12  flex justify-end gap-2 sora-regular mt-4">
-        <FooterPane newCode={newCode} action={handleSave} isSaved={isSaved} />
+        <FooterPane
+          newCode={newCode}
+          oldCode={fetchedCode}
+          action={handleSave}
+          isSaved={isSaved}
+        />
       </footer>
     </div>
   );

@@ -7,6 +7,9 @@ import moment from "moment";
 import Link from "next/link";
 import { BezelButton, BezelDeleteButton } from "../Buttons/Bezel";
 import { Pen, Trash } from "lucide-react";
+import { Link as Link_Icon } from "lucide-react";
+import { IconButton, Tooltip } from "@mui/material";
+import { Flip, toast } from "react-toastify";
 interface MediaProp {
   fileName: string;
   fileURL?: string;
@@ -22,6 +25,22 @@ export default function FileCard({
   ref,
   onDelete,
 }: MediaProp) {
+  const notify = () =>
+    toast.info("URL copied", {
+      theme: "colored",
+      hideProgressBar: true,
+      autoClose: 1000,
+      position: "bottom-center",
+      closeOnClick: true,
+      transition: Flip,
+    });
+  const handleCopyToClipboard = () => {
+    const link = `${process.env.NEXT_PUBLIC_ROOT_URL}/view${ref}`;
+    navigator.clipboard.writeText(link).then(() => {
+      notify();
+    });
+  };
+
   return (
     <Card
       sx={{
@@ -87,6 +106,13 @@ export default function FileCard({
         >
           Preview
         </Link>
+        <div>
+          <Tooltip title="Copy page link">
+            <IconButton onClick={handleCopyToClipboard}>
+              <Link_Icon className="text-slate-50 hover:text-slate-400 ease-in transition-colors duration-200" />
+            </IconButton>
+          </Tooltip>
+        </div>
       </CardActions>
     </Card>
   );
