@@ -1,8 +1,9 @@
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { PortfolioMeta } from "@/app/types/firestoreTypes";
+import axios from "axios";
 export async function fetchFileMetaData(
-  path: string
+  path: string,
 ): Promise<PortfolioMeta | null> {
   try {
     const docRef = doc(db, path);
@@ -18,14 +19,23 @@ export async function fetchFileMetaData(
     return null;
   }
 }
-export async function deleteDocByPath(path: string) {
+export async function deleteDocByPath(path: string): Promise<boolean> {
   console.log("PATH", path);
   try {
     const docRef = doc(db, path);
+    const response = await axios.delete(
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/storage`,
+      {
+        data: { path },
+      },
+    );
+    if (response.status !== 200) return false;
+    console.log("DELETE RESPOSNE ", response.data);
     await deleteDoc(docRef);
-    console.log("Document deleted ");
+    return true;
   } catch (err) {
     console.error(err);
+    return false;
   }
 }
 export async function reNameFile(path: string, newFileName: string) {

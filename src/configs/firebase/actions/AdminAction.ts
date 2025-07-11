@@ -18,7 +18,7 @@ export class FireStoreAdminActions {
     uid: string,
     uniqueId: string,
     fileName: string,
-    path: string
+    path: string,
   ) {
     await this.db
       .collection("users")
@@ -32,14 +32,5 @@ export class FireStoreAdminActions {
         updatedAt: Date.now(),
         ref: path,
       });
-  }
-  static async UpdateFileDoc(path: string, snapshotURL: string) {
-    await this.db.doc(path).set(
-      {
-        snapshotURL,
-        updatedAt: Date.now(),
-      },
-      { merge: true } // ✅ Only update these fields; don't overwrite
-    );
   }
 }

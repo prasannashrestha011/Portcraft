@@ -7,9 +7,10 @@ import {
 } from "@/configs/firebase/actions/ClientActions";
 interface prop {
   filePath: string;
+  fileName: string;
+  setFileName: (fileName: string) => void;
 }
-const FileRenameInterface = ({ filePath }: prop) => {
-  const [fileName, setFileName] = useState("");
+const FileRenameInterface = ({ filePath, fileName, setFileName }: prop) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newFileName, setNewFileName] = useState("");
   const handleFetch = async () => {

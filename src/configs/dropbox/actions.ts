@@ -22,14 +22,17 @@ export async function ReadFiles(path: string): Promise<string> {
 export async function UploadFiles(
   userID: string,
   fileName: string,
-  fileContent: string
+  filePath: string,
+  fileContent: string,
 ): Promise<DropBoxResult> {
   try {
     const dbx = DropBoxClass.Init();
     const timestampRegex = /_\d{13}\.txt$/;
-    const uniqueId = timestampRegex.test(fileName)
-      ? fileName
-      : `${fileName}_${Date.now()}.txt`;
+    const uniqueId = timestampRegex.test(filePath)
+      ? filePath
+      : `${filePath}_${Date.now()}.txt`;
+    console.log("file path ", filePath);
+    console.log("uniqueId ", uniqueId);
     const response = await dbx.filesUpload({
       path: `/users/${userID}/portfolios/${uniqueId}`,
       contents: fileContent,
@@ -44,7 +47,7 @@ export async function UploadFiles(
       userID,
       uniqueId,
       fileName,
-      path_lower!
+      path_lower!,
     );
     return Promise.resolve(result);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +66,7 @@ export async function UploadFiles(
 //uploading user's profile image
 export async function UploadImageFile(
   fullPath: string,
-  fileContent: Buffer
+  fileContent: Buffer,
 ): Promise<string> {
   try {
     const dbx = DropBoxClass.Init();
@@ -120,5 +123,29 @@ export async function UploadImageFile(
   } catch (err: any) {
     console.error("Final Dropbox error:", err?.message);
     return Promise.reject("");
+  }
+}
+export async function DeleteFileDBX(path: string): Promise<boolean> {
+  if (!path) {
+    console.log("Path not provided");
+    return false;
+  }
+  try {
+    const dbx = DropBoxClass.Init();
+    await dbx.filesDeleteV2({ path });
+    console.log(`DELETED ${path}`);
+    return true;
+  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const errObj = err as any;
+    const tag = errObj?.error?.error?.[".tag"];
+    const reason = errObj?.error?.error?.path_lookup?.[".tag"];
+
+    if (tag === "path_lookup" && reason === "not_found") {
+      console.warn(`⚠️ File not found: ${path}`);
+    } else {
+      console.error("❌ DELETION ERROR:", err);
+    }
+    return false;
   }
 }

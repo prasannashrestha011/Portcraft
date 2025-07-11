@@ -15,10 +15,10 @@ const CodeLists = () => {
     : null;
 
   const [portfolioMetaList, setPortFolioMetaList] = useState<PortfolioMeta[]>(
-    []
+    [],
   );
-  const notify = (fileName: string) =>
-    toast(`${fileName} has been deleted`, {
+  const notify = (message: string) =>
+    toast(message, {
       theme: "dark",
     });
   const loadMetaList = async () => {
@@ -36,8 +36,12 @@ const CodeLists = () => {
   };
   const handleDelete = async (ref: string, fileName: string) => {
     if (!ref) return;
-    await deleteDocByPath(ref);
-    notify(fileName);
+    const isDeleted = await deleteDocByPath(ref);
+    if (!isDeleted) {
+      notify(`❌ Failed to delete ${fileName}`);
+      return;
+    }
+    notify(`✅ ${fileName} deleted`);
     setPortFolioMetaList((prev) => prev.filter((doc) => doc.ref != ref));
   };
   useEffect(() => {

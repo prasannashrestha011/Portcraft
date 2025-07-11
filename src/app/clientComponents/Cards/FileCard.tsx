@@ -42,8 +42,8 @@ export default function FileCard({
       <CardContent className="flex flex-col justify-center items-start">
         <Typography>
           <img
-            src={snapshotURL || "https://placehold.co/600x400?text=No+Preview"}
-            className="w-full"
+            src={snapshotURL || "https://placehold.co/600x498?text=No+Preview"}
+            className="w-80"
           />
         </Typography>
         <Typography

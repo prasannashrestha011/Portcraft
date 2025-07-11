@@ -19,20 +19,23 @@ const ViewPage = () => {
   const path = param.params as string[];
   //accessing file name from identifier
   const filePath = path[path.length - 1];
+  const [fileName, setFileName] = useState<string>("");
+
   const [isSaved, setIsSaved] = useState<boolean>(false);
 
   const { fetchedCode, newCode, setNewCode } = useCodeLoader(path);
   const handleSave = async () => {
     console.log("CALLING API");
     const cleanedHTML = CleanedHTML(newCode);
-    if (!user) {
-      console.log("No user");
+    if (!user || !fileName) {
+      console.log("No user or fileName ");
       return;
     }
     const { status } = await SavePortFolioData(
       cleanedHTML,
       user?.uid,
       filePath,
+      fileName,
     );
     setIsSaved(status);
   };
@@ -57,7 +60,11 @@ const ViewPage = () => {
         </span>
       </p>
       <header className="w-full flex flex-col items-center justify-center ">
-        <FileRenameInterface filePath={path.join("/")} />
+        <FileRenameInterface
+          filePath={path.join("/")}
+          fileName={fileName}
+          setFileName={setFileName}
+        />
         <div className="w-10/12  flex justify-center  sora-regular mt-4 ">
           <span className="w-6/12 text-center">Editor</span>
           <Link href={`/view/${path.join("/")}`} className="flex-1 text-center">

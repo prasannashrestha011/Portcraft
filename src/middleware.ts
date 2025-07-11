@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(request: NextRequest) {
   console.log("Loading middleware ..");
   const sessionCookie = request.cookies.get("session")?.value;
-  console.log(sessionCookie);
   if (!sessionCookie) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
