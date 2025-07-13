@@ -7,7 +7,8 @@ import { NextRequest, NextResponse } from "next/server";
 //for reading files
 export async function GET(req: NextRequest) {
   const path = getQueryParam(req, "path");
-  if (!path) return NextResponse.json({ error: "Path not provided" });
+  if (!path)
+    return NextResponse.json({ error: "Path not provided" }, { status: 400 });
   const string = await ReadFiles(path);
   return NextResponse.json({ message: string });
 }
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
   if (!fileName || !filePath || !file || !(file instanceof File) || !userID) {
     return NextResponse.json(
       { error: "No file uploaded or wrong format" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
     userID.toLowerCase(),
     fileName.toLowerCase(),
     filePath?.toString(),
-    fileContent
+    fileContent,
   );
   return NextResponse.json({ name, lower_path });
 }
@@ -42,7 +43,7 @@ export async function DELETE(req: NextRequest) {
     if (!path)
       return NextResponse.json(
         { message: "path not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const isDeleted = await DeleteFileDBX(path);
@@ -50,7 +51,7 @@ export async function DELETE(req: NextRequest) {
       ? NextResponse.json({ message: "File deleted " }, { status: 200 })
       : NextResponse.json(
           { message: "Failed to deleted the file" },
-          { status: 400 }
+          { status: 500 },
         );
   } catch (err) {
     console.log(err);
