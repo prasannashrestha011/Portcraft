@@ -89,7 +89,7 @@ export default function FileCard({
         </Typography>
       </CardContent>
       <CardActions sx={{ pt: 0, pb: 2, px: 2 }}>
-        <Link href={`/view/editor/${ref}`} passHref>
+        <Link href={`/editor/${ref}`} passHref>
           <BezelButton className="py-2 px-3 text-xs font-bold ">
             <Pen size={12} />
             <span>Edit</span>
