@@ -5,7 +5,6 @@ import grapesjs, { Editor } from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
 import { useCodeLoader } from "@/app/view/editor/[...params]/components/CodeLoader";
 import { useParams } from "next/navigation";
-import { rawCode } from "../rawCode";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 const GrapesEditor = () => {
@@ -15,7 +14,7 @@ const GrapesEditor = () => {
   const path = param.params as string[];
   const { fetchedCode } = useCodeLoader(path);
   useEffect(() => {
-    if (editorContainer.current && !editorRef.current) {
+    if (editorContainer.current && !editorRef.current && fetchedCode) {
       const cssMatch = fetchedCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
       const htmlMatch = fetchedCode.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
       const jsMatch = fetchedCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
@@ -98,7 +97,8 @@ const GrapesEditor = () => {
       });
       editorRef.current = editor;
     }
-  }, [rawCode]);
+    console.log(fetchedCode);
+  }, [fetchedCode]);
 
   return <div ref={editorContainer} />;
 };
