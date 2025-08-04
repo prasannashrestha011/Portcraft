@@ -39,7 +39,6 @@ const LoginPage = () => {
     if (!res.ok) throw new Error("Session creation failed");
 
     setUser(firebaseUser);
-    router.push("/home");
   };
 
   const handleGoogleSignIn = async () => {
