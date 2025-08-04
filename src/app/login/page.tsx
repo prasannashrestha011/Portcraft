@@ -16,7 +16,6 @@ import { SiSnapcraft } from "react-icons/si";
 const LoginPage = () => {
   const user = useUserStore((state) => state.user);
   const setUser = useUserStore((state) => state.setUser);
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
