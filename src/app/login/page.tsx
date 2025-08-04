@@ -37,6 +37,7 @@ const LoginPage = () => {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ token, userMetaData }),
       });
+      window.location.href = "/home";
     });
     return () => unsubscribe();
   }, [router, setUser]);
