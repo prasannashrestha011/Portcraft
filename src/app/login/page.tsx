@@ -19,162 +19,110 @@ const LoginPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [authInitialized, setAuthInitialized] = useState(false);
 
-  const handleUserSession = async (user: User) => {
-    try {
-      setIsLoading(true);
-      setError("");
+  const createSession = async (firebaseUser: User) => {
+    const token = await getIdToken(firebaseUser, true);
+    const userMetaData: UserMetaData = {
+      uid: firebaseUser.uid,
+      email: firebaseUser.email!,
+      displayName: firebaseUser.displayName!,
+      photoURL: firebaseUser.photoURL!,
+      storagePath: `/users/${firebaseUser.uid}`,
+    };
 
-      const token = await getIdToken(user, true);
-      const userMetaData: UserMetaData = {
-        uid: user.uid,
-        email: user.email!,
-        displayName: user.displayName!,
-        photoURL: user.photoURL!,
-        storagePath: `/users/${user.uid}`,
-      };
+    const res = await fetch("/api/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, userMetaData }),
+    });
 
-      const res = await fetch("/api/session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, userMetaData }),
-      });
+    if (!res.ok) throw new Error("Session creation failed");
 
-      if (!res.ok) {
-        throw new Error("Failed to create session");
-      }
-
-      setUser(user);
-      return true;
-    } catch (err) {
-      console.error("Session error:", err);
-      setError("Failed to sign in. Please try again.");
-      await auth.signOut();
-      return false;
-    } finally {
-      setIsLoading(false);
-    }
+    setUser(firebaseUser);
+    router.push("/home");
   };
 
   const handleGoogleSignIn = async () => {
     try {
       setIsLoading(true);
       setError("");
-      const result = await signInWithPopup(auth, googleProvider);
-      const success = await handleUserSession(result.user);
 
-      if (success) {
-        router.replace("/home");
-      }
+      const result = await signInWithPopup(auth, googleProvider);
+      await createSession(result.user);
     } catch (err) {
-      console.error("Google sign-in error:", err);
-      setError("Google sign-in failed. Please try again.");
+      console.error("Sign-in error:", err);
+      setError("Sign-in failed. Please try again.");
+    } finally {
       setIsLoading(false);
     }
   };
 
+  // Handle existing auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        const success = await handleUserSession(firebaseUser);
-        if (success && !window.location.pathname.includes("/home")) {
-          router.replace("/home");
+      if (firebaseUser && !user) {
+        try {
+          await createSession(firebaseUser);
+        } catch (err) {
+          console.error("Auth state error:", err);
+          auth.signOut();
         }
       }
-      setAuthInitialized(true);
     });
 
-    return () => unsubscribe();
-  }, [router, setUser]);
+    return unsubscribe;
+  }, []);
 
-  if (!authInitialized) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
-        <div className="text-white text-center">
-          <p className="text-xl">Initializing authentication...</p>
-        </div>
-      </div>
-    );
-  }
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user, router]);
 
   if (user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
-        <div className="text-white text-center">
-          <p className="text-xl">Redirecting to home page...</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center">
+        <p className="text-white text-xl">Redirecting...</p>
       </div>
     );
   }
 
   return (
-    <div className="sora-regular">
-      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
-        <div className="max-w-md w-full">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-800 rounded-full mb-4">
-              <SiSnapcraft size={32} className="text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-            <p className="text-gray-300">Sign in to continue to your account</p>
+    <div className="sora-regular min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
+      <div className="max-w-md w-full">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-800 rounded-full mb-4">
+            <SiSnapcraft size={32} className="text-white" />
           </div>
+          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
+          <p className="text-gray-300">Sign in to continue to your account</p>
+        </div>
 
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-8 shadow-2xl">
-            {error && (
-              <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-lg text-red-200 text-sm">
-                {error}
-              </div>
-            )}
-            <div className="text-center">
-              <div className="space-y-6">
-                <button
-                  onClick={handleGoogleSignIn}
-                  disabled={isLoading}
-                  className={`w-full flex items-center justify-center gap-3 ${
-                    isLoading
-                      ? "bg-gray-700 cursor-not-allowed"
-                      : "bg-gray-800 hover:bg-gray-700"
-                  } text-white px-6 py-3 rounded-lg transition-all duration-200 font-medium border ${
-                    isLoading
-                      ? "border-gray-700"
-                      : "border-gray-600 hover:border-gray-500"
-                  }`}
-                >
-                  {isLoading ? (
-                    <>
-                      <svg
-                        className="animate-spin h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                      Processing...
-                    </>
-                  ) : (
-                    <>
-                      <FcGoogle size={20} />
-                      Sign In with Google
-                    </>
-                  )}
-                </button>
-              </div>
+        <div className="bg-gray-800 border border-gray-700 rounded-xl p-8 shadow-2xl">
+          {error && (
+            <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-lg text-red-200 text-sm">
+              {error}
             </div>
-          </div>
+          )}
+
+          <button
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500"
+          >
+            {isLoading ? (
+              <>
+                <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                Processing...
+              </>
+            ) : (
+              <>
+                <FcGoogle size={20} />
+                Sign In with Google
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>
