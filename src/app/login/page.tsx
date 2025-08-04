@@ -74,12 +74,12 @@ const LoginPage = () => {
   }, []);
 
   // Redirect if already logged in
-  useEffect(() => {
-    if (user) {
-      window.location.href = "/home/";
-    }
-  }, []);
 
+  useEffect(() => {
+    if (user && document.cookie.includes("session=")) {
+      window.location.href = "/home";
+    }
+  }, [user]);
   if (user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center">
