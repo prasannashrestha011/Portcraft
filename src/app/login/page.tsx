@@ -81,8 +81,6 @@ const LoginPage = () => {
         if (success && !window.location.pathname.includes("/home")) {
           router.replace("/home");
         }
-      } else {
-        setUser(null);
       }
       setAuthInitialized(true);
     });
