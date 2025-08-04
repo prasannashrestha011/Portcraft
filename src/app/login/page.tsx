@@ -44,7 +44,6 @@ const LoginPage = () => {
       }
 
       setUser(user);
-      router.push("/home");
     } catch (err) {
       console.error("Session error:", err);
       setError("Failed to sign in. Please try again.");
@@ -75,6 +74,12 @@ const LoginPage = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  }, [user]);
 
   if (user) {
     return (
