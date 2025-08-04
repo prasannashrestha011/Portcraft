@@ -32,16 +32,18 @@ const LoginPage = () => {
         photoURL: user.photoURL!,
         storagePath: `/users/${user.uid}`,
       };
-      await fetch("/api/session", {
+      const res = await fetch("/api/session", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ token, userMetaData }),
       });
 
-      router.replace("/home");
+      if (res.ok) {
+        router.replace("/home");
+      }
     });
     return () => unsubscribe();
-  }, [router, setUser]);
+  }, []);
   return (
     <div className="sora-regular">
       {user ? (
