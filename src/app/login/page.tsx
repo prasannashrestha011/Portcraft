@@ -34,7 +34,7 @@ const LoginPage = () => {
       };
       await fetch("/api/session", {
         method: "POST",
-        headers: { "Content-type": "applications/json" },
+        headers: { "Content-type": "application/json" },
         body: JSON.stringify({ token, userMetaData }),
       });
 
