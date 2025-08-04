@@ -14,7 +14,8 @@ import { FcGoogle } from "react-icons/fc";
 import { SiSnapcraft } from "react-icons/si";
 
 const LoginPage = () => {
-  const { setUser } = useUserStore();
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,6 +43,7 @@ const LoginPage = () => {
       if (!res.ok) {
         throw new Error("Failed to create session");
       }
+      console.log(user);
       setUser(user);
     } catch (err) {
       console.error("Session error:", err);
@@ -49,7 +51,11 @@ const LoginPage = () => {
       await auth.signOut();
     } finally {
       setIsLoading(false);
-      router.push("/home");
+      try {
+        router.push("/home");
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -74,6 +80,12 @@ const LoginPage = () => {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log("redirecting......");
+    }
+  }, [user]);
 
   return (
     <div className="sora-regular">
