@@ -19,6 +19,7 @@ const LoginPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   const handleUserSession = async (user: User) => {
     try {
@@ -43,19 +44,16 @@ const LoginPage = () => {
       if (!res.ok) {
         throw new Error("Failed to create session");
       }
-      console.log(user);
+
       setUser(user);
+      return true;
     } catch (err) {
       console.error("Session error:", err);
       setError("Failed to sign in. Please try again.");
       await auth.signOut();
+      return false;
     } finally {
       setIsLoading(false);
-      try {
-        router.push("/home");
-      } catch (err) {
-        console.log(err);
-      }
     }
   };
 
@@ -64,7 +62,11 @@ const LoginPage = () => {
       setIsLoading(true);
       setError("");
       const result = await signInWithPopup(auth, googleProvider);
-      await handleUserSession(result.user);
+      const success = await handleUserSession(result.user);
+
+      if (success) {
+        router.replace("/home");
+      }
     } catch (err) {
       console.error("Google sign-in error:", err);
       setError("Google sign-in failed. Please try again.");
@@ -73,25 +75,45 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user && !isLoading) {
-        await handleUserSession(user);
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        const success = await handleUserSession(firebaseUser);
+        if (success && !window.location.pathname.includes("/home")) {
+          router.replace("/home");
+        }
+      } else {
+        setUser(null);
       }
+      setAuthInitialized(true);
     });
-    return () => unsubscribe();
-  }, []);
 
-  useEffect(() => {
-    if (user) {
-      console.log("redirecting......");
-    }
-  }, [user]);
+    return () => unsubscribe();
+  }, [router, setUser]);
+
+  if (!authInitialized) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
+        <div className="text-white text-center">
+          <p className="text-xl">Initializing authentication...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (user) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
+        <div className="text-white text-center">
+          <p className="text-xl">Redirecting to home page...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="sora-regular">
       <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] flex items-center justify-center px-4">
         <div className="max-w-md w-full">
-          {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-800 rounded-full mb-4">
               <SiSnapcraft size={32} className="text-white" />
@@ -100,7 +122,6 @@ const LoginPage = () => {
             <p className="text-gray-300">Sign in to continue to your account</p>
           </div>
 
-          {/* Main Content */}
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-8 shadow-2xl">
             {error && (
               <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-lg text-red-200 text-sm">
