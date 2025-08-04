@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     }
     const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
 
-    const serialized = serialize("session", token, {
+    const cookie = serialize("session", token, {
       httpOnly: true,
       maxAge: expiresIn / 1000,
       path: "/",
@@ -20,8 +20,13 @@ export async function POST(req: NextRequest) {
       sameSite: "lax",
     });
 
-    const response = NextResponse.json({ status: "success" });
-    response.headers.set("Set-Cookie", serialized);
+    const response = new NextResponse(JSON.stringify({ status: "success" }), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Set-Cookie": cookie,
+      },
+    });
     return response;
   } catch (err) {
     console.error(err);
