@@ -76,7 +76,7 @@ const LoginPage = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (user) {
-      router.push("/home");
+      window.location.href = "/home/";
     }
   }, [user, router]);
 
