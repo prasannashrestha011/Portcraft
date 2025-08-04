@@ -74,7 +74,7 @@ const LoginPage = () => {
       }
     });
     return () => unsubscribe();
-  }, [user]);
+  }, []);
 
   if (user) {
     return (
