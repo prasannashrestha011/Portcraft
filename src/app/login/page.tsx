@@ -78,7 +78,7 @@ const LoginPage = () => {
     if (user) {
       window.location.href = "/home/";
     }
-  }, [user, router]);
+  }, []);
 
   if (user) {
     return (
