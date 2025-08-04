@@ -1,7 +1,12 @@
 "use client";
 import { auth, googleProvider } from "@/configs/firebase/firebase";
 import { useUserStore } from "@/store/userStore";
-import { getIdToken, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import {
+  getIdToken,
+  onAuthStateChanged,
+  signInWithPopup,
+  User,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { UserMetaData } from "./type";
@@ -14,7 +19,7 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleUserSession = async (user: any) => {
+  const handleUserSession = async (user: User) => {
     try {
       setIsLoading(true);
       setError("");
