@@ -20,6 +20,7 @@
     "@mui/material": "^7.1.0",
     "@react-page/editor": "^5.4.5",
     "@react-page/plugins-slate": "^5.4.5",
+    "@react-pdf/renderer": "^4.3.0",
     "axios": "^1.9.0",
     "codemirror": "^6.0.2",
     "cookie": "^1.0.2",
