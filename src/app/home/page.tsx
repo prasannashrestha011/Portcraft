@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/userStore";
 import { User } from "firebase/auth";
 import React, { useEffect } from "react";
 import CodeLists from "./CodeLists";
-import { LoadingSpinnerTransparent } from "../clientComponents/LoadingSpinner";
+
 import { IoAdd } from "react-icons/io5";
 
 import Link from "next/link";
