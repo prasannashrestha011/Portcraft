@@ -11,7 +11,7 @@ export function SignOut() {
     try {
       await signOut(auth);
       await axios.get(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/session/logout`);
-      nav.replace("/");
+      window.location.href = "/";
       setUser(null);
     } catch (err) {
       console.log("Logout error-> ", err);
