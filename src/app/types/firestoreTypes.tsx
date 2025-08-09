@@ -3,4 +3,5 @@ export type PortfolioMeta = {
   ref: string;
   snapshotURL: string;
   createdAt: Date;
+  repositoryURL?: string;
 };

@@ -13,6 +13,7 @@ export async function ReadFiles(path: string): Promise<string> {
     const result = response.result as any;
     const blob = result.fileBinary;
     const text = Buffer.from(blob).toString("utf-8");
+
     return text;
   } catch (err) {
     console.log(err);
@@ -23,7 +24,7 @@ export async function UploadFiles(
   userID: string,
   fileName: string,
   filePath: string,
-  fileContent: string,
+  fileContent: string
 ): Promise<DropBoxResult> {
   try {
     const dbx = DropBoxClass.Init();
@@ -47,7 +48,7 @@ export async function UploadFiles(
       userID,
       uniqueId,
       fileName,
-      path_lower!,
+      path_lower!
     );
     return Promise.resolve(result);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,7 +67,7 @@ export async function UploadFiles(
 //uploading user's profile image
 export async function UploadImageFile(
   fullPath: string,
-  fileContent: Buffer,
+  fileContent: Buffer
 ): Promise<string> {
   try {
     const dbx = DropBoxClass.Init();

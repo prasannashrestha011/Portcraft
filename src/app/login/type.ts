@@ -5,3 +5,8 @@ export type UserMetaData = {
   photoURL: string;
   storagePath: string;
 };
+
+export type GithubUserInfo = {
+  displayName: string;
+  photoURL: string;
+};

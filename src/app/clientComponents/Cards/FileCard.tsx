@@ -45,6 +45,7 @@ export default function FileCard({
     <Card
       sx={{
         maxWidth: 290,
+        maxHeight: 350,
         bgcolor: "#1a1a1a",
         border: "1px solid #333",
         borderRadius: 2,
@@ -61,7 +62,10 @@ export default function FileCard({
       <CardContent className="flex flex-col justify-center items-start">
         <Typography>
           <img
-            src={snapshotURL || "https://placehold.co/600x498?text=No+Preview"}
+            src={
+              snapshotURL ||
+              "https://placehold.co/600x498?text=No+Preview&font=pt-sans"
+            }
             className="w-80"
           />
         </Typography>
@@ -76,7 +80,7 @@ export default function FileCard({
             mb: 1,
           }}
         >
-          {fileName}
+          {fileName.split(".")[0] + ".html"}
         </Typography>
         <Typography
           variant="body2"

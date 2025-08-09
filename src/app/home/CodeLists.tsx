@@ -6,6 +6,7 @@ import { PortfolioMeta } from "../types/firestoreTypes";
 import FileCard from "../clientComponents/Cards/FileCard";
 import { deleteDocByPath } from "@/configs/firebase/actions/ClientActions";
 import { toast } from "react-toastify";
+import { LoadingSpinnerTransparent } from "../clientComponents/LoadingSpinner";
 const CodeLists = () => {
   const { user } = useUserStore();
 
@@ -15,12 +16,13 @@ const CodeLists = () => {
     : null;
 
   const [portfolioMetaList, setPortFolioMetaList] = useState<PortfolioMeta[]>(
-    [],
+    []
   );
   const notify = (message: string) =>
     toast(message, {
       theme: "dark",
     });
+  // meta data list
   const loadMetaList = async () => {
     if (!portfoliosRef) return;
     const snapShots = await getDocs(portfoliosRef);
@@ -34,6 +36,7 @@ const CodeLists = () => {
     console.log(list);
     setPortFolioMetaList(list);
   };
+  //
   const handleDelete = async (ref: string, fileName: string) => {
     if (!ref) return;
     const isDeleted = await deleteDocByPath(ref);
@@ -50,8 +53,11 @@ const CodeLists = () => {
   if (!user) {
     return <div>No code list</div>;
   }
+  if (!portfolioMetaList) {
+    return <LoadingSpinnerTransparent />;
+  }
   return (
-    <div>
+    <div className=" w-10/12 mx-auto mt-5 h-screen  overflow-auto  custom-scrollbar pb-30">
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-2 mx-auto w-10/12   p-2 ">
         {portfolioMetaList.map((doc, idx) => (
           <FileCard

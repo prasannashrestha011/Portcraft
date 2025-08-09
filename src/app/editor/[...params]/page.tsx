@@ -1,35 +1,52 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import grapesjs, { Editor } from "grapesjs";
 import "grapesjs/dist/css/grapes.min.css";
 import { useCodeLoader } from "@/app/view/editor/[...params]/components/CodeLoader";
 import { useParams } from "next/navigation";
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
+
+import { CodeMatcher, PrepareHTML_CSS_Structure } from "@/utility/matcher";
+import { PrepareZipDownload } from "../actions/prepareZipDownload";
+import { SavePortFolioData } from "@/app/result/actions";
+import { useUserStore } from "@/store/userStore";
+import { toast } from "react-toastify";
+import { LoadingSpinnerTransparent } from "@/app/clientComponents/LoadingSpinner";
+
 const GrapesEditor = () => {
   const editorRef = useRef<Editor | null>(null);
   const editorContainer = useRef<HTMLDivElement>(null);
   const param = useParams();
   const path = param.params as string[];
-  const { fetchedCode } = useCodeLoader(path);
-  useEffect(() => {
+  const filePath = path[path.length - 1];
+  const { fetchedCode, metaData } = useCodeLoader(path);
+  const { user } = useUserStore();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const handleSave = async (newCode: string) => {
+    if (!user) return;
+    setIsLoading(true);
+    const { status } = await SavePortFolioData(
+      newCode,
+      user?.uid,
+      filePath,
+      metaData?.fileName
+    );
+    if (status) {
+      toast.success("File saved");
+    } else {
+      toast.error("Failed to save the file");
+    }
+    setIsLoading(false);
+  };
+  const editorHandler = () => {
     if (editorContainer.current && !editorRef.current && fetchedCode) {
-      const cssMatch = fetchedCode.match(/<style[^>]*>([\s\S]*?)<\/style>/i);
-      const htmlMatch = fetchedCode.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-      const jsMatch = fetchedCode.match(/<script[^>]*>([\s\S]*?)<\/script>/i);
-      const extractedCSS = cssMatch ? cssMatch[1] : "";
-      const cssWithoutVariables = extractedCSS
-        .replace(/var\(--gradient-start\)/g, "#667eea")
-        .replace(/var\(--gradient-end\)/g, "#764ba2")
-        .replace(/var\(--text-color\)/g, "white")
-        .replace(/var\(--card-bg\)/g, "white")
-        .replace(/var\(--shadow-color\)/g, "rgba(0, 0, 0, 0.1)")
-        .replace(/var\(--base-spacing\)/g, "16px")
-        .replace(/var\(--border-radius\)/g, "10px");
-      let extractedHTML = htmlMatch ? htmlMatch[1] : "";
-      const extractedJS = jsMatch ? jsMatch[1] : "";
-
+      const {
+        extractedHTML: initialExtractedHTML,
+        extractedCSS,
+        cssWithoutVariables,
+        extractedJS,
+      } = CodeMatcher(fetchedCode);
+      let extractedHTML = initialExtractedHTML;
       if (extractedJS.trim()) {
         extractedHTML += `<script>${extractedJS}</script>`;
       }
@@ -42,51 +59,36 @@ const GrapesEditor = () => {
         plugins: [],
         panels: {},
       });
+
+      editor.setComponents(`
+  ${extractedHTML}
+  <div data-gjs-type="script-placeholder"></div>
+      `);
+      editor.setStyle(extractedCSS);
+      editor.setStyle(cssWithoutVariables);
+
+      editor.Commands.add("save-command", {
+        run() {
+          const updatedHTML = editor.getHtml();
+          const updatedCSS = editor.getCss()!;
+
+          const newCode = PrepareHTML_CSS_Structure(updatedHTML, updatedCSS);
+          handleSave(newCode);
+        },
+      });
+      editor.Commands.add("download-zip-command", {
+        run() {
+          const updatedHTML = editor.getHtml();
+          const updatedCSS = editor.getCss()!;
+          PrepareZipDownload(updatedHTML, updatedCSS, extractedJS);
+        },
+      });
       editor.Panels.addButton("options", {
         id: "save-button",
         className: "fa fa-save",
         label: "Save",
         command: "save-command",
         attributes: { title: "Save Project" },
-      });
-      editor.Commands.add("save-command", {
-        run() {
-          alert("Code saved inside GrapesJS!");
-        },
-      });
-
-      editor.setComponents(`
-  ${extractedHTML}
-  <div data-gjs-type="script-placeholder"></div>
-`);
-      editor.setStyle(extractedCSS);
-      editor.setStyle(cssWithoutVariables);
-
-      editor.Commands.add("download-zip-command", {
-        run() {
-          const indexHtmlContent = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Downloaded Project</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  ${extractedHTML}
-  <script src="script.js"></script>
-</body>
-</html>`;
-
-          const zip = new JSZip();
-          zip.file("index.html", indexHtmlContent);
-          zip.file("styles.css", extractedCSS);
-          zip.file("script.js", extractedJS);
-
-          zip.generateAsync({ type: "blob" }).then((content) => {
-            saveAs(content, "project.zip");
-          });
-        },
       });
       editor.Panels.addButton("options", {
         id: "download-zip-button",
@@ -97,10 +99,21 @@ const GrapesEditor = () => {
       });
       editorRef.current = editor;
     }
-    console.log(fetchedCode);
+  };
+  useEffect(() => {
+    editorHandler();
   }, [fetchedCode]);
+  if (!fetchedCode) {
+    return <LoadingSpinnerTransparent />;
+  }
+  return (
+    <div className="relative h-screen">
+      {/* GrapesJS editor */}
+      <div ref={editorContainer} className="h-full" />
 
-  return <div ref={editorContainer} />;
+      {isLoading && <LoadingSpinnerTransparent />}
+    </div>
+  );
 };
 
 export default GrapesEditor;

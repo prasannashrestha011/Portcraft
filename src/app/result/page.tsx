@@ -2,7 +2,7 @@
 import { useResultStore } from "@/store/resultStore";
 import { useUserStore } from "@/store/userStore";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SavePortFolioData } from "./actions";
 import SignInModel from "../clientComponents/Models/SignInModel";
 import LoadingSpinner from "../clientComponents/LoadingSpinner";
@@ -16,22 +16,32 @@ const ResultPage = () => {
   const [showAuthModel, setShowAuthModel] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState<boolean>(false);
+  const [pendingSave, setPendingSave] = useState<boolean>(false);
   const notify = () => toast("File has been saved", { theme: "dark" });
   const cleanedHTML = rawHTML
     .replace(/^```[a-zA-Z]*\n?/, "") // remove starting ```
     .replace(/```$/, "");
+  useEffect(() => {
+    if (user && pendingSave) {
+      uploadHandler();
+    }
+  }, [user]);
   const uploadHandler = async () => {
     if (!user) {
       setShowAuthModel(true);
+      setPendingSave(true);
       return;
     }
+    setShowAuthModel(false);
     setIsLoading(true);
     const { status } = await SavePortFolioData(cleanedHTML, user?.uid);
     setIsSaved(status);
     setIsLoading(false);
+
     notify();
     router.replace("/home");
   };
+
   if (!rawHTML) {
     return <div>Page not found</div>;
   }
@@ -74,16 +84,18 @@ const ResultPage = () => {
           View the full page
         </Link>
         <div className="mt-5">
-          {isLoading && <LoadingSpinner />}
-
           {!isLoading && isSaved && <span>Saved</span>}
 
-          <button
-            className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
-            onClick={uploadHandler}
-          >
-            Save
-          </button>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <button
+              className="bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl cursor-pointer"
+              onClick={uploadHandler}
+            >
+              Save
+            </button>
+          )}
         </div>
         {showAuthModel && (
           <SignInModel open={showAuthModel} setOpen={setShowAuthModel} />

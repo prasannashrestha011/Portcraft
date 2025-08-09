@@ -3,7 +3,7 @@ import { db } from "../firebase";
 import { PortfolioMeta } from "@/app/types/firestoreTypes";
 import axios from "axios";
 export async function fetchFileMetaData(
-  path: string,
+  path: string
 ): Promise<PortfolioMeta | null> {
   try {
     const docRef = doc(db, path);
@@ -27,10 +27,10 @@ export async function deleteDocByPath(path: string): Promise<boolean> {
       `${process.env.NEXT_PUBLIC_ROOT_URL}/api/storage`,
       {
         data: { path },
-      },
+      }
     );
     if (response.status !== 200) return false;
-    console.log("DELETE RESPOSNE ", response.data);
+
     await deleteDoc(docRef);
     return true;
   } catch (err) {

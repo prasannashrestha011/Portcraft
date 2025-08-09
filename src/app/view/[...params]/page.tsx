@@ -1,8 +1,9 @@
 "use client";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { FetchCodeFile } from "../action";
+import { FetchPublicCodeFile } from "../action";
 import { CleanedHTML } from "@/utility/unescapeJsonstring";
+import { LoadingSpinnerTransparent } from "@/app/clientComponents/LoadingSpinner";
 
 const ViewPage = () => {
   const param = useParams();
@@ -10,7 +11,7 @@ const ViewPage = () => {
   const pathString = "/" + Array.from(path).join("/");
   const [code, setCode] = useState<string>("");
   const handleCodeLoad = async () => {
-    const fetchedCode = await FetchCodeFile(pathString);
+    const fetchedCode = await FetchPublicCodeFile(pathString);
     const cleanedCode = CleanedHTML(fetchedCode);
     setCode(cleanedCode);
   };
@@ -20,7 +21,9 @@ const ViewPage = () => {
   if (!path) {
     return <div>No path provided</div>;
   }
-
+  if (!code) {
+    return <LoadingSpinnerTransparent text="Loading the page" />;
+  }
   return (
     <div className="w-screen h-screen p-4 overflow-auto ">
       <div dangerouslySetInnerHTML={{ __html: code }} />

@@ -1,52 +1,68 @@
 "use client";
-import { auth, googleProvider } from "@/configs/firebase/firebase";
+import {
+  auth,
+  githubProvider,
+  googleProvider,
+} from "@/configs/firebase/firebase";
 import { useUserStore } from "@/store/userStore";
 import { getIdToken, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { UserMetaData } from "./type";
+
 import { FcGoogle } from "react-icons/fc";
 import { SiSnapcraft } from "react-icons/si";
+import { SaveUserInfo } from "@/configs/firebase/actions/UserActions";
+import { UserDoc } from "@/configs/firebase/types";
 const LoginPage = () => {
   const { user, setUser } = useUserStore();
   const router = useRouter();
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
+
       if (result) {
         setUser(result.user);
+        const { uid, displayName, email } = result.user;
+        if (!displayName || !email) return;
+        const newUser: UserDoc = { uid, name: displayName, email };
+        SaveUserInfo(newUser);
       }
     } catch (err) {
       console.log(err);
     }
   };
+  const handleGithubProvider = async () => {
+    try {
+      const result = await signInWithPopup(auth, githubProvider);
+
+      if (result) {
+        setUser(result.user);
+        const { uid, displayName, email } = result.user;
+        if (!displayName || !email) return;
+        const newUser: UserDoc = { uid, name: displayName, email };
+        SaveUserInfo(newUser);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) return;
       setUser(user);
       const token = await getIdToken(user, true);
-      const userMetaData: UserMetaData = {
-        uid: user.uid,
-        email: user.email!,
-        displayName: user.displayName!,
-        photoURL: user.photoURL!,
-        storagePath: `/users/${user.uid}`,
-      };
+
       await fetch("/api/session", {
         method: "POST",
         headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ token, userMetaData }),
+        body: JSON.stringify({ token }),
       });
-      window.location.replace("/home") 
+      window.location.replace("/home");
     });
     return () => unsubscribe();
   }, [router, setUser]);
-  useEffect(() => {
-    if (user) {
-      router.replace("/home");
-      console.log("redirec to home page");
-    }
-  }, [user, router]);
+
   return (
     <div className="sora-regular">
       {user ? (
@@ -77,6 +93,13 @@ const LoginPage = () => {
                   >
                     <FcGoogle size={32} />
                     Sign In with Google
+                  </button>
+                  <button
+                    onClick={handleGithubProvider}
+                    className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500"
+                  >
+                    <FcGoogle size={32} />
+                    Sign In with Github
                   </button>
                 </div>
               </div>
