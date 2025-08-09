@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { FetchPublicCodeFile } from "../action";
-import { CleanedHTML } from "@/utility/unescapeJsonstring";
+import { CleanedHTML } from "@/utilities/unescapeJsonstring";
 import { LoadingSpinnerTransparent } from "@/app/clientComponents/LoadingSpinner";
 
 const ViewPage = () => {

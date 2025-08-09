@@ -2,7 +2,7 @@
 import { FormType } from "@/app/types/formType";
 import { useResultStore } from "@/store/resultStore";
 
-import { GeneratePrompt } from "@/utility/prompt_generator";
+import { GeneratePrompt } from "@/utilities/prompt_generator";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { ReactNode, useState } from "react";

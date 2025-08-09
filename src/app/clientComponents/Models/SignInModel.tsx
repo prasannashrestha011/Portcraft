@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { OauthSignInMethod } from "@/utility/OauthAction";
+import { OauthSignInMethod } from "@/utilities/OauthAction";
 import { useUserStore } from "@/store/userStore";
 import { FcGoogle } from "react-icons/fc";
 

@@ -6,7 +6,10 @@ export type UserMetaData = {
   storagePath: string;
 };
 
-export type GithubUserInfo = {
-  displayName: string;
-  photoURL: string;
+export type JsonPayload = {
+  uid: string;
+  email: string;
+  name: string;
+  iat: Date;
+  exp: Date;
 };

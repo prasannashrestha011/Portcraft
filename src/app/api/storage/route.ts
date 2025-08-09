@@ -3,32 +3,40 @@ import {
   ReadFiles,
   UploadFiles,
 } from "@/configs/dropbox/actions";
-import { admin } from "@/configs/firebase/firebase-admin";
+import { verifyJwtToken } from "@/utilities/jwt_methods";
+
 import { NextRequest, NextResponse } from "next/server";
 //for reading files
 export async function GET(req: NextRequest) {
   const token = req.cookies.get("session")?.value;
   if (!token) {
-    return NextResponse.json({ error: "No token found" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 }
+    );
   }
+
   try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
+    const decodedToken = verifyJwtToken(token);
+    if (!decodedToken) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
 
-    console.log(decodedToken);
     const path = getQueryParam(req, "path");
-    console.log("PATH ", path);
-    if (!path)
-      return NextResponse.json({ error: "Path not provided" }, { status: 400 });
+    if (!path) {
+      return NextResponse.json({ error: "Path required" }, { status: 400 });
+    }
+
     const userId = path.split("/")[2];
-
-    if (userId !== decodedToken.uid.toLowerCase())
+    if (userId !== decodedToken.uid.toLowerCase()) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
 
-    const string = await ReadFiles(path);
-
-    return NextResponse.json({ message: string });
-  } catch (err) {
-    return NextResponse.json({ err: err }, { status: 500 });
+    const content = await ReadFiles(path);
+    return NextResponse.json({ message: content });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
 //uploading files

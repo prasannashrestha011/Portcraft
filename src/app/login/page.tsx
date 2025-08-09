@@ -4,8 +4,9 @@ import {
   githubProvider,
   googleProvider,
 } from "@/configs/firebase/firebase";
+
 import { useUserStore } from "@/store/userStore";
-import { getIdToken, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -22,9 +23,13 @@ const LoginPage = () => {
 
       if (result) {
         setUser(result.user);
+
         const { uid, displayName, email } = result.user;
+
         if (!displayName || !email) return;
+
         const newUser: UserDoc = { uid, name: displayName, email };
+
         SaveUserInfo(newUser);
       }
     } catch (err) {
@@ -37,8 +42,10 @@ const LoginPage = () => {
 
       if (result) {
         setUser(result.user);
+
         const { uid, displayName, email } = result.user;
         if (!displayName || !email) return;
+
         const newUser: UserDoc = { uid, name: displayName, email };
         SaveUserInfo(newUser);
       }
@@ -50,16 +57,24 @@ const LoginPage = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (!user) return;
+
       setUser(user);
-      const token = await getIdToken(user, true);
+
+      const token = {
+        uid: user.uid.toLowerCase(),
+        email: user.email,
+        name: user.displayName,
+      };
 
       await fetch("/api/session", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),
       });
+
       window.location.replace("/home");
     });
+
     return () => unsubscribe();
   }, [router, setUser]);
 

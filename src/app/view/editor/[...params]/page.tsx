@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { useUserStore } from "@/store/userStore";
 import { SavePortFolioData } from "@/app/result/actions";
-import { CleanedHTML } from "@/utility/unescapeJsonstring";
+import { CleanedHTML } from "@/utilities/unescapeJsonstring";
 import EditorPane from "./components/EditorPane";
 import PreviewPane from "./components/PreviewPane";
 import { useCodeLoader } from "./components/CodeLoader";
@@ -38,7 +38,7 @@ const ViewPage = () => {
       cleanedHTML,
       user?.uid,
       filePath,
-      fileName,
+      fileName
     );
     setIsSaved(status);
   };

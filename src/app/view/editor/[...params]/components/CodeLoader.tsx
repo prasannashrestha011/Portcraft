@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FetchCodeFile } from "../../../action";
-import { CleanedHTML } from "@/utility/unescapeJsonstring";
+import { CleanedHTML } from "@/utilities/unescapeJsonstring";
 import { PortfolioMeta } from "@/app/types/firestoreTypes";
 import { db } from "@/configs/firebase/firebase";
 import { doc, getDoc } from "firebase/firestore";

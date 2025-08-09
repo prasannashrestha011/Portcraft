@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { serialize } from "cookie";
-import { admin } from "@/configs/firebase/firebase-admin";
 
+import jwt from "jsonwebtoken";
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const { token } = body;
   try {
-    const decoded = await admin.auth().verifyIdToken(token);
-    if (!decoded) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
-    const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+    const expiresIn = 1.5 * 24 * 60 * 60 * 1000; // 1.5 days in milliseconds (36 hours)
 
-    const cookie = serialize("session", token, {
+    const tokenStr = jwt.sign(token, process.env.JWT_SECRET!, {
+      expiresIn: "36h", // 36 hours = 1.5 days
+    });
+    console.log("JWT TOKEN ", tokenStr);
+    const cookie = serialize("session", tokenStr, {
       httpOnly: true,
       maxAge: expiresIn / 1000,
       path: "/",
