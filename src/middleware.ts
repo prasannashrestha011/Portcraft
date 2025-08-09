@@ -7,7 +7,11 @@ export async function middleware(request: NextRequest) {
     console.log("Redirecting to login page");
     return NextResponse.redirect(new URL("/login", request.url));
   }
-  return NextResponse.next();
+  return NextResponse.next({
+    headers: {
+      "Cache-Control": "no-store", // Prevent cached authenticated pages
+    },
+  });
 }
 export const config = {
   matcher: ["/home/:path*"],
