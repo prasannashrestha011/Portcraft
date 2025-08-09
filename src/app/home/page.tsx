@@ -21,9 +21,7 @@ const HomePage = () => {
       }
     });
   }, [user, setUser]);
-  if (!user) {
-    return <LoadingSpinnerTransparent />;
-  }
+
   return (
     <div className="bg-[#121212] h-svh overflow-hidden ">
       <nav className="flex gap-3 justify-between items-center pt-2 mr-1 border-b border-gray-700 pb-2">
