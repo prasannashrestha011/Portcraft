@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/userStore";
 import { User } from "firebase/auth";
 import React, { useEffect } from "react";
 import CodeLists from "./CodeLists";
-
+import { LoadingSpinnerTransparent } from "../clientComponents/LoadingSpinner";
 import { IoAdd } from "react-icons/io5";
 
 import Link from "next/link";
@@ -21,7 +21,9 @@ const HomePage = () => {
       }
     });
   }, [user, setUser]);
-
+  if (!user) {
+    return <LoadingSpinnerTransparent />;
+  }
   return (
     <div className="bg-[#121212] h-svh overflow-hidden ">
       <nav className="flex gap-3 justify-between items-center pt-2 mr-1 border-b border-gray-700 pb-2">
