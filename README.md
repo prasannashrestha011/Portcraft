@@ -48,7 +48,7 @@ npm run dev
 | API_KEY               | Gemini api key                         | YOUR_API_KEY                                                                             |
 | ROOT_URL              | Project root url                       | https://portfolio-builder-phi-three.vercel.app/                                          |
 | FIREBASE_ADMIN_KEYS   | firebase credential                    | {type:"service account",project_id:"",..}                                                |
-| DROPBOX_API_KEY       | id for your application                | nxx131ab5kx                                                                              |
+| DROPBOX_API_KEY       | id for your application                | nxx131ab5kx(example id)                                                                              |
 | DROPBOX_API_SECRET    | password of your application           | ox**\***                                                                                 |
 | DROPBOX_ACCESS_TOKEN  | authentication token                   | sl.u.**\*\***                                                                            |
 | DROPBOX_REFRESH_TOKEN | one time token to refresh access token | br\_....                                                                                 |
