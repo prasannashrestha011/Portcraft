@@ -1,6 +1,7 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
+import { getDatabase } from "firebase/database";
 
 // Initialize Firebase
 const firebaseConfig = JSON.parse(
@@ -11,8 +12,9 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
 const auth = getAuth(app);
 const db = getFirestore(app);
+const realDb = getDatabase(app);
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 githubProvider.addScope("repo");
 githubProvider.addScope("workflow");
-export { app, auth, db, googleProvider, githubProvider };
+export { app, auth, db, realDb, googleProvider, githubProvider };

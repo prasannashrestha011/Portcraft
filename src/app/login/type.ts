@@ -13,3 +13,8 @@ export type JsonPayload = {
   iat: Date;
   exp: Date;
 };
+export type ParticipantMetaData = {
+  uid: string;
+  displayName: string;
+  photoURL: string;
+};
