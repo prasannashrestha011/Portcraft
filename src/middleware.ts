@@ -4,7 +4,6 @@ import { jwtVerify } from "jose";
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get("session")?.value;
-  console.log("Session cookie in middleware:", sessionCookie);
 
   if (!sessionCookie) {
     console.log("Redirecting to login page");
@@ -13,7 +12,7 @@ export async function middleware(request: NextRequest) {
   try {
     const { payload } = await jwtVerify(
       sessionCookie,
-      new TextEncoder().encode(process.env.JWT_SECRET!)
+      new TextEncoder().encode(process.env.JWT_SECRET!),
     );
     console.log(payload);
   } catch (err) {
