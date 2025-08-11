@@ -5,10 +5,10 @@ if (!process.env.FIREBASE_ADMIN_KEYS) {
 }
 const serviceAccount = JSON.parse(process.env.FIREBASE_ADMIN_KEYS);
 if (!admin.apps.length) {
-  console.log(process.env.FIREBASE_DATABASE_URL)
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    databaseURL:
+      "https://port-craft-default-rtdb.asia-southeast1.firebasedatabase.app",
   });
 }
 export async function verifyIdToken(token: string) {
