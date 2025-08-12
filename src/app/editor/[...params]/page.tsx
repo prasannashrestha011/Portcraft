@@ -98,14 +98,34 @@ const GrapesEditor = () => {
         attributes: { title: "Download Project ZIP" },
       });
       editorRef.current = editor;
+      editor.on("load", () => {
+        const iframeWindow = editor.Canvas.getWindow();
+
+        iframeWindow.addEventListener("keydown", (e) => {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+            e.preventDefault();
+            const active = iframeWindow.document.activeElement;
+            if (active instanceof HTMLElement) {
+              active.blur();
+            }
+
+            const updatedHTML = editor.getHtml();
+            const updatedCSS = editor.getCss()!;
+
+            const newCode = PrepareHTML_CSS_Structure(updatedHTML, updatedCSS);
+            handleSave(newCode);
+          }
+        });
+      });
     }
   };
   useEffect(() => {
     editorHandler();
   }, [fetchedCode]);
   if (!fetchedCode) {
-    return <LoadingSpinnerTransparent />;
+    <div>NO code file found</div>;
   }
+
   return (
     <div className="relative h-screen">
       {/* GrapesJS editor */}

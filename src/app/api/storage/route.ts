@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   if (!token) {
     return NextResponse.json(
       { error: "Authentication required" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -51,16 +51,17 @@ export async function POST(req: NextRequest) {
   if (!fileName || !filePath || !file || !(file instanceof File) || !userID) {
     return NextResponse.json(
       { error: "No file uploaded or wrong format" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   const fileContent = await file.text();
+  console.log("File content:", fileContent);
   const { name, lower_path } = await UploadFiles(
     userID.toLowerCase(),
     fileName.toLowerCase(),
     filePath?.toString(),
-    fileContent
+    fileContent,
   );
   return NextResponse.json({ name, lower_path });
 }
@@ -70,7 +71,7 @@ export async function DELETE(req: NextRequest) {
     if (!path)
       return NextResponse.json(
         { message: "path not provided" },
-        { status: 400 }
+        { status: 400 },
       );
 
     const isDeleted = await DeleteFileDBX(path);
@@ -78,7 +79,7 @@ export async function DELETE(req: NextRequest) {
       ? NextResponse.json({ message: "File deleted " }, { status: 200 })
       : NextResponse.json(
           { message: "Failed to deleted the file" },
-          { status: 500 }
+          { status: 500 },
         );
   } catch (err) {
     console.log(err);

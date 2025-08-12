@@ -10,6 +10,7 @@ export async function SavePortFolioData(
   fileName: string = "portfolio.txt",
 ): Promise<ReturnProp> {
   try {
+    console.log("NEW CODE ", cleanedHTML);
     const formData = new FormData();
     formData.append("fileName", fileName);
     formData.append("filePath", filePath);
@@ -23,6 +24,7 @@ export async function SavePortFolioData(
         },
       },
     );
+    console.log(response.data);
     return { status: response.status == 200, path: response.data.path };
   } catch (err) {
     console.error(err);

@@ -3,10 +3,11 @@ import { useUserStore } from "@/store/userStore";
 import { collection, getDocs } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { PortfolioMeta } from "../types/firestoreTypes";
-import FileCard from "../clientComponents/Cards/FileCard";
 import { deleteDocByPath } from "@/configs/firebase/actions/ClientActions";
 import { toast } from "react-toastify";
 import { LoadingSpinnerTransparent } from "../clientComponents/LoadingSpinner";
+import Image from "next/image";
+import FileCard from "../clientComponents/Cards/FileCard";
 const CodeLists = () => {
   const { user } = useUserStore();
 
@@ -16,7 +17,7 @@ const CodeLists = () => {
     : null;
 
   const [portfolioMetaList, setPortFolioMetaList] = useState<PortfolioMeta[]>(
-    []
+    [],
   );
   const notify = (message: string) =>
     toast(message, {
@@ -36,6 +37,9 @@ const CodeLists = () => {
     console.log(list);
     setPortFolioMetaList(list);
   };
+  useEffect(() => {
+    loadMetaList();
+  }, [userID]);
   //
   const handleDelete = async (ref: string, fileName: string) => {
     if (!ref) return;
@@ -47,14 +51,27 @@ const CodeLists = () => {
     notify(`✅ ${fileName} deleted`);
     setPortFolioMetaList((prev) => prev.filter((doc) => doc.ref != ref));
   };
-  useEffect(() => {
-    loadMetaList();
-  }, [user]);
   if (!user) {
     return <div>No code list</div>;
   }
   if (!portfolioMetaList) {
     return <LoadingSpinnerTransparent />;
+  }
+  if (portfolioMetaList.length === 0) {
+    return (
+      <div className="text-center text-gray-200 sora-regular mt-10 flex flex-col items-center justify-center ">
+        <p>Get started by creating your very first portfolio!</p>
+        <Image
+          src={"/images/plan.png"}
+          alt="plan"
+          width={300}
+          height={300}
+          className="border"
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+        />
+      </div>
+    );
   }
   return (
     <div className=" w-10/12 mx-auto mt-5 h-screen  overflow-auto  custom-scrollbar pb-30">

@@ -1,16 +1,20 @@
-import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import moment from "moment";
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { BezelButton, BezelDeleteButton } from "../Buttons/Bezel";
-import { Pen, Trash } from "lucide-react";
-import { Link as Link_Icon } from "lucide-react";
-import { IconButton, Tooltip } from "@mui/material";
+import { Pen, Trash, Copy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import moment from "moment";
 import { Flip, toast } from "react-toastify";
-interface MediaProp {
+
+interface FileCardProps {
   fileName: string;
   fileURL?: string;
   snapshotURL: string;
@@ -18,13 +22,13 @@ interface MediaProp {
   ref: string;
   onDelete: (ref: string, fileName: string) => void;
 }
+
 export default function FileCard({
   fileName,
-  snapshotURL,
   createdAt,
   ref,
   onDelete,
-}: MediaProp) {
+}: FileCardProps) {
   const notify = () =>
     toast.info("URL copied", {
       theme: "colored",
@@ -40,84 +44,87 @@ export default function FileCard({
       notify();
     });
   };
-
   return (
-    <Card
-      sx={{
-        maxWidth: 290,
-        maxHeight: 350,
-        bgcolor: "#1a1a1a",
-        border: "1px solid #333",
-        borderRadius: 2,
-        transition: "all 0.2s ease-in-out",
-        "&:hover": {
-          transform: "translateY(-2px)",
-          boxShadow: "0 8px 25px rgba(0,0,0,0.4)",
-          borderColor: "#555",
-          p: 0,
-          m: 0,
-        },
-      }}
-    >
-      <CardContent className="flex flex-col justify-center items-start">
-        <Typography>
-          <img
-            src={
-              snapshotURL ||
-              "https://placehold.co/600x498?text=No+Preview&font=pt-sans"
-            }
-            className="w-80"
+    <Card className="group w-72 bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-all duration-300 hover:shadow-xl hover:shadow-black/20 hover:-translate-y-1">
+      <CardContent className="p-0">
+        {/* Thumbnail Section */}
+        <div className="relative overflow-hidden rounded-t-lg bg-zinc-800">
+          <Image
+            src="/images/thumbnail.png"
+            width={288}
+            height={160}
+            alt={`${fileName} thumbnail`}
+            className="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+            draggable={false}
+            onContextMenu={(e) => e.preventDefault()}
           />
-        </Typography>
-        <Typography
-          variant="h6"
-          component="div"
-          sx={{
-            color: "#ffffff",
-            fontWeight: 500,
-            fontSize: "1rem",
-            lineHeight: 1.3,
-            mb: 1,
-          }}
-        >
-          {fileName.split(".")[0] + ".html"}
-        </Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            color: "#888",
-            fontSize: "0.85rem",
-          }}
-        >
-          Edited {moment.utc(createdAt).fromNow()}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ pt: 0, pb: 2, px: 2 }}>
-        <Link href={`/editor/${ref}`} passHref>
-          <BezelButton className="py-2 px-3 text-xs font-bold ">
-            <Pen size={12} />
-            <span>Edit</span>
-          </BezelButton>
-        </Link>
-        <BezelDeleteButton onClick={() => onDelete(ref, fileName)}>
-          <Trash size={12} />
-          <span>Delete</span>
-        </BezelDeleteButton>
-        <Link
-          href={`/view/${ref}`}
-          passHref
-          className="text-blue-600 hover:underline cursor-pointer"
-        >
-          Preview
-        </Link>
-        <div>
-          <Tooltip title="Copy page link">
-            <IconButton onClick={handleCopyToClipboard}>
-              <Link_Icon className="text-slate-50 hover:text-slate-400 ease-in transition-colors duration-200" />
-            </IconButton>
-          </Tooltip>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
-      </CardActions>
+
+        {/* Content Section */}
+        <div className="p-4 space-y-3">
+          <div className="space-y-1">
+            <h3 className="font-semibold text-white text-sm leading-tight line-clamp-2">
+              {fileName.split(".")[0] + ".html"}
+            </h3>
+            <p className="text-zinc-400 text-xs">
+              Edited {moment.utc(createdAt).fromNow()}
+            </p>
+          </div>
+
+          {/* Actions Section */}
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center gap-2">
+              <Link href={`/editor/${ref}`}>
+                <Button
+                  size="sm"
+                  className="h-8 px-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium"
+                >
+                  <Pen className="w-3 h-3 mr-1.5" />
+                  Edit
+                </Button>
+              </Link>
+
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 px-3 border-zinc-700 bg-transparent hover:bg-zinc-800 text-zinc-300 hover:text-white text-xs"
+                onClick={() => onDelete(ref, fileName)}
+              >
+                <Trash className="w-3 h-3 mr-1.5" />
+                Delete
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-1">
+              <Link
+                href={`/view/${ref}`}
+                className="text-xs text-zinc-400 hover:text-blue-400 transition-colors duration-200 px-2 py-1 rounded hover:bg-zinc-800"
+              >
+                Preview
+              </Link>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 w-8 p-0 text-zinc-400 hover:text-white hover:bg-zinc-800"
+                      onClick={handleCopyToClipboard}
+                    >
+                      <Copy className="w-3.5 h-3.5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Copy page link</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }

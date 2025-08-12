@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Path not provided" }, { status: 400 });
 
     const string = await ReadFiles(path);
-
     return NextResponse.json({ message: string });
   } catch (err) {
     return NextResponse.json({ err: err }, { status: 500 });
