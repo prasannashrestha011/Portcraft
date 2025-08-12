@@ -1,3 +1,4 @@
+import { UserMetaData } from "@/app/login/type";
 import { admin } from "../firebase-admin";
 
 export class FireStoreAdminActions {
