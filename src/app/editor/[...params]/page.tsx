@@ -27,9 +27,8 @@ const GrapesEditor = () => {
   const [isChanged, setIsChanged] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
-  const [_, setSavedCode] = useState<string | null>(null);
   const [filename, setFilename] = useState<string>(
-    metaData?.fileName || "Untitled",
+    metaData?.fileName || "Untitled"
   );
 
   const handleSave = async (newCode: string) => {
@@ -39,10 +38,9 @@ const GrapesEditor = () => {
       newCode,
       user?.uid,
       filePath,
-      metaData?.fileName,
+      metaData?.fileName
     );
     if (status) {
-      setSavedCode(newCode);
       setIsChanged(false);
     } else {
       toast.error("Failed to save the file");
@@ -135,7 +133,7 @@ const GrapesEditor = () => {
             const updatedCSS = editor.getCss()!;
             const newCode = PrepareHTML_CSS_Structure(updatedHTML, updatedCSS);
             handleSave(newCode);
-            setSavedCode(newCode);
+
             setIsChanged(false);
           }
         });
