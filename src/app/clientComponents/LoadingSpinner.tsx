@@ -25,5 +25,19 @@ export function LoadingSpinnerTransparent({ text }: { text?: string }) {
     </div>
   );
 }
+export function MiniSpinner() {
+  return (
+    <div className="flex items-center justify-center ">
+      <FadeLoader
+        color="#ffffff"
+        height={10}
+        width={1}
+        radius={0.5}
+        margin={0.5}
+        style={{ display: "inline-block", transform: "scale(0.5)" }} // scale down entire loader
+      />
+    </div>
+  );
+}
 
 export default LoadingSpinner;
