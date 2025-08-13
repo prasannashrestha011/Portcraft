@@ -7,6 +7,7 @@ import CertificateInputs from "./FormComponents/DynamicInputs/CertificationInput
 import ExperienceInputs from "./FormComponents/DynamicInputs/ExperienceInputs";
 import EducationInputs from "./FormComponents/DynamicInputs/EducationInputs";
 import { DM_Sans } from "next/font/google";
+import ProfessionalSummaryInput from "./FormComponents/professional_summary";
 const custom_font = DM_Sans({
   subsets: ["latin"],
 });
@@ -21,6 +22,7 @@ const PortfolioBuilderForm = () => {
         <div className="bg-gray-800 shadow-lg rounded-lg p-6">
           <Personal_Info />
 
+          <ProfessionalSummaryInput />
           <Skills />
 
           <ProjectsInput />

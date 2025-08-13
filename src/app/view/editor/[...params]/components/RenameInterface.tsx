@@ -79,7 +79,9 @@ const FileRenameInterface = ({ filePath, fileName, setFileName }: prop) => {
   }
   return (
     <div className="flex items-center gap-2">
-      <span className="sora-regular text-white">{fileName}</span>
+      <span className="sora-regular text-white truncate block max-w-[200px]">
+        {fileName}
+      </span>
       <button
         onClick={handleStartEdit}
         className="p-1 text-gray-400 hover:text-white transition-colors"

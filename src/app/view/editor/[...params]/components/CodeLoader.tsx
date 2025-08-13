@@ -9,6 +9,7 @@ export function useCodeLoader(path: string[]) {
   const [fetchedCode, setFetchedCode] = useState<string>("");
   const [newCode, setNewCode] = useState<string>("");
   const [metaData, setMetaData] = useState<PortfolioMeta | null>();
+  const [isCodeLoading, setIsCodeLoading] = useState<boolean>(true);
   //file meta data
   const loadMetaData = async () => {
     try {
@@ -30,11 +31,13 @@ export function useCodeLoader(path: string[]) {
 
   const loadCodeContent = async () => {
     const pathString = "/" + Array.from(path).join("/");
-    const codeContent = await FetchCodeFile(pathString);
 
+    setIsCodeLoading(true);
+    const codeContent = await FetchCodeFile(pathString);
     const cleanedHTML = CleanedHTML(codeContent);
     setFetchedCode(cleanedHTML);
     setNewCode(cleanedHTML);
+    setIsCodeLoading(false);
   };
 
   useEffect(() => {
@@ -42,5 +45,5 @@ export function useCodeLoader(path: string[]) {
     loadCodeContent();
   }, [path]);
 
-  return { metaData, fetchedCode, newCode, setNewCode };
+  return { metaData, fetchedCode, newCode, setNewCode, isCodeLoading };
 }
