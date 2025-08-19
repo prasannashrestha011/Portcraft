@@ -74,8 +74,8 @@ const CodeLists = () => {
     );
   }
   return (
-    <div className=" w-10/12 mx-auto mt-5 h-screen  overflow-auto  custom-scrollbar pb-30">
-      <ul className="grid grid-cols-1 md:grid-cols-3 gap-2 mx-auto w-10/12   p-2 ">
+    <div className="max-w-6xl mx-auto mt-5 h-[calc(100vh-100px)] overflow-auto pb-8 custom-scrollbar ">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 justify-items-center  ">
         {portfolioMetaList.map((doc, idx) => (
           <FileCard
             key={idx}

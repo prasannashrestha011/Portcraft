@@ -18,11 +18,10 @@ export function SignOut() {
   };
   return (
     <button
-      className="group flex w-full items-center gap-2 rounded-lg
-      font-light bg-red-700 hover:bg-red-900 px-3 py-1.5 data-focus:bg-white/10"
+      className="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md transition-colors"
       onClick={() => handleLogOut()}
     >
-      Logout
+      Sign Out
     </button>
   );
 }

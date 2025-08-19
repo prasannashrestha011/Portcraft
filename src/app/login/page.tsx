@@ -11,9 +11,11 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 import { FcGoogle } from "react-icons/fc";
-import { SiSnapcraft } from "react-icons/si";
+
 import { SaveUserInfo } from "@/configs/firebase/actions/UserActions";
 import { UserDoc } from "@/configs/firebase/types";
+import { FaGithub } from "react-icons/fa";
+import { AppLogoMedium } from "@/utilities/app_logo";
 const LoginPage = () => {
   const { user, setUser } = useUserStore();
   const router = useRouter();
@@ -88,7 +90,7 @@ const LoginPage = () => {
             {/* Header */}
             <div className="text-center mb-8">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-800 rounded-full mb-4">
-                <SiSnapcraft size={32} />
+                <AppLogoMedium />
               </div>
               <h1 className="text-3xl font-bold text-white mb-2">
                 Welcome Back
@@ -113,7 +115,7 @@ const LoginPage = () => {
                     onClick={handleGithubProvider}
                     className="w-full flex items-center justify-center gap-3 bg-gray-800 hover:bg-gray-700 text-white px-6 py-3 rounded-lg transition-all duration-200 font-medium border border-gray-600 hover:border-gray-500"
                   >
-                    <FcGoogle size={32} />
+                    <FaGithub size={32} />
                     Sign In with Github
                   </button>
                 </div>

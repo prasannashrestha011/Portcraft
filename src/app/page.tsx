@@ -1,4 +1,4 @@
-import { Index } from "./clientComponents/Index";
+import Index from "./clientComponents/Index";
 
 export default function Home() {
   return (

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/tooltip";
 import moment from "moment";
 import { Flip, toast } from "react-toastify";
-import { DM_Sans } from "next/font/google";
+import { custom_font } from "@/utilities/custom_font";
 
 interface FileCardProps {
   fileName: string;
@@ -23,9 +23,6 @@ interface FileCardProps {
   ref: string;
   onDelete: (ref: string, fileName: string) => void;
 }
-const custom_font = DM_Sans({
-  subsets: ["latin"],
-});
 
 export default function FileCard({
   fileName,
