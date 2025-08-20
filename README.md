@@ -1,6 +1,6 @@
 # Portcraft
 
-![ Home Page]("/images/home.png")
+![ Home Page]("public/images/home.png")
 A web-based portfolio builder that allows users to create and customize their personal portfolios easily. Built with Next.js and modern UI components.
 
 ## 🚀 Live Demo
