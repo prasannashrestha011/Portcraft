@@ -9,6 +9,8 @@ Check out the live version: [https://portfolio-builder-phi-three.vercel.app/](ht
 
 ## ✨ Features
 
+- **LIVE-Editor**
+  ![EditorPage](public/images/editor.png)
 - 🧠 **AI-Powered Code Generation (Gemini API)**  
   Integrated with Google's Gemini API to intelligently generate, refactor, and autocomplete code based on your prompts.
 
