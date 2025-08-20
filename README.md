@@ -4,7 +4,7 @@ A web-based portfolio builder that allows users to create and customize their pe
 
 ## 🚀 Live Demo
 
-Check out the live version: [portfoliobuilder.vercel.app](https://portfoliobuilder.vercel.app)
+Check out the live version: [https://portfolio-builder-phi-three.vercel.app/](https://portfolio-builder-phi-three.vercel.app/)
 
 ## ✨ Features
 
@@ -48,7 +48,7 @@ npm run dev
 | API_KEY               | Gemini api key                         | YOUR_API_KEY                                                                             |
 | ROOT_URL              | Project root url                       | https://portfolio-builder-phi-three.vercel.app/                                          |
 | FIREBASE_ADMIN_KEYS   | firebase credential                    | {type:"service account",project_id:"",..}                                                |
-| DROPBOX_API_KEY       | id for your application                | nxx131ab5kx(example id)                                                                              |
+| DROPBOX_API_KEY       | id for your application                | nxx131ab5kx(example id)                                                                  |
 | DROPBOX_API_SECRET    | password of your application           | ox**\***                                                                                 |
 | DROPBOX_ACCESS_TOKEN  | authentication token                   | sl.u.**\*\***                                                                            |
 | DROPBOX_REFRESH_TOKEN | one time token to refresh access token | br\_....                                                                                 |
