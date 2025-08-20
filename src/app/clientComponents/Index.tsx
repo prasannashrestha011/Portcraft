@@ -64,7 +64,7 @@ export default function Index() {
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4 sm:px-6">
         <div className="flex flex-col items-center text-center max-w-4xl">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200 mb-4">
-            Portfolio Builder
+            Portcraft
           </h1>
           <p className="text-base sm:text-lg text-slate-100 max-w-md mb-10 leading-relaxed">
             Build and share your portfolio instantly simple, smart, no fuss.
