@@ -1,11 +1,14 @@
+import { custom_font } from "@/utilities/custom_font";
 import Index from "./clientComponents/Index";
 
 export default function Home() {
   return (
     <div
-      className="
-      sora-regular
-  relative min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] overflow-hidden  "
+      className={`
+
+  relative min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29] overflow-hidden  
+${custom_font.className}
+`}
     >
       <Index />
       <div className="absolute bottom-[-120px] right-[-120px] w-[400px] h-[400px] bg-purple-900 opacity-40 rounded-full filter blur-3xl"></div>
