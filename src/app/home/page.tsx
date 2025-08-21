@@ -4,7 +4,7 @@ import { useUserStore } from "@/store/userStore";
 import { User } from "firebase/auth";
 import React, { useEffect } from "react";
 import CodeLists from "./CodeLists";
-import { LoadingSpinnerTransparent } from "../clientComponents/LoadingSpinner";
+import { LogoSpinner } from "../clientComponents/LoadingSpinner";
 
 import { HomeMenu } from "../clientComponents/Menu/HomeMenu";
 import SlideDrawer from "../clientComponents/Drawers/HomeDrawer";
@@ -22,7 +22,7 @@ const HomePage = () => {
     });
   }, [user, setUser]);
   if (!user) {
-    return <LoadingSpinnerTransparent />;
+    return <LogoSpinner size={60} />;
   }
   return (
     <div

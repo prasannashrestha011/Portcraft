@@ -9,16 +9,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { AppLogoMedium } from "@/utilities/app_logo";
+
 import { ExternalLink, User, Info, FileText } from "lucide-react";
 import Link from "next/link";
-
+import { MoreHorizontal } from "lucide-react";
 const IndexDrawer = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <Button size="lg" className="md:hidden">
-          <AppLogoMedium />
+          <MoreHorizontal size={27} />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-h-[80vh]">

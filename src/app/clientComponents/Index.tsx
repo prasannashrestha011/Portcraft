@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import IndexDrawer from "./Drawers/IndexDrawer";
-import { AppLogoMedium } from "@/utilities/app_logo";
+import { AnimatedLogo } from "@/utilities/app_logo";
 
 export default function Index() {
   const desData = [
@@ -21,17 +21,8 @@ export default function Index() {
   return (
     <div className="relative min-h-screen w-full bg-gray-900 border border-neutral-800 overflow-hidden">
       {/* Navigation */}
-      <nav className="h-16 flex  justify-between items-center px-4 sm:px-6 lg:px-14 text-slate-100 text-sm font-semibold">
+      <nav className="h-16 flex  justify-end items-center px-4 sm:px-6 lg:px-14 text-slate-100 text-sm font-semibold">
         {/* Logo */}
-        <div className="md:flex hidden z-50">
-          <Link
-            href="/"
-            className="flex items-center hover:text-white transition-colors"
-            passHref
-          >
-            <AppLogoMedium />
-          </Link>
-        </div>
         <div className="md:hidden flex items-center z-10">
           <IndexDrawer />
         </div>
@@ -63,6 +54,7 @@ export default function Index() {
       {/* Main hero content */}
       <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4 sm:px-6">
         <div className="flex flex-col items-center text-center max-w-4xl">
+          <AnimatedLogo />
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200 mb-4">
             Portcraft
           </h1>

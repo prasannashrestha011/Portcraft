@@ -16,6 +16,7 @@ import { SaveUserInfo } from "@/configs/firebase/actions/UserActions";
 import { UserDoc } from "@/configs/firebase/types";
 import { FaGithub } from "react-icons/fa";
 import { AppLogoMedium } from "@/utilities/app_logo";
+import RedirectingInterface from "../clientComponents/RedirectingInterface";
 const LoginPage = () => {
   const { user, setUser } = useUserStore();
   const router = useRouter();
@@ -83,7 +84,7 @@ const LoginPage = () => {
   return (
     <div className="sora-regular">
       {user ? (
-        <span>Redirecting to the home page..</span>
+        <RedirectingInterface />
       ) : (
         <div className="min-h-screen bg-gradient-to-br from-[#0a0a0f] via-[#1a1a2e] to-[#0f0c29]  flex items-center justify-center px-4">
           <div className="max-w-md w-full">

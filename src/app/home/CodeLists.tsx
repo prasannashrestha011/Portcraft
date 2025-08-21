@@ -16,9 +16,9 @@ const CodeLists = () => {
     ? collection(db, "users", userID, "portfolios")
     : null;
 
-  const [portfolioMetaList, setPortFolioMetaList] = useState<PortfolioMeta[]>(
-    [],
-  );
+  const [portfolioMetaList, setPortFolioMetaList] = useState<
+    PortfolioMeta[] | null
+  >(null);
   const notify = (message: string) =>
     toast(message, {
       theme: "dark",
@@ -49,12 +49,14 @@ const CodeLists = () => {
       return;
     }
     notify(`✅ ${fileName} deleted`);
-    setPortFolioMetaList((prev) => prev.filter((doc) => doc.ref != ref));
+    setPortFolioMetaList((prev) =>
+      prev ? prev.filter((doc) => doc.ref !== ref) : []
+    );
   };
   if (!user) {
     return <div>No code list</div>;
   }
-  if (!portfolioMetaList) {
+  if (portfolioMetaList == null) {
     return <LoadingSpinnerTransparent />;
   }
   if (portfolioMetaList.length === 0) {
@@ -76,16 +78,19 @@ const CodeLists = () => {
   return (
     <div className="max-w-6xl mx-auto mt-5 h-[calc(100vh-100px)] overflow-auto pb-8 custom-scrollbar ">
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 justify-items-center  ">
-        {portfolioMetaList.map((doc, idx) => (
-          <FileCard
-            key={idx}
-            ref={doc.ref}
-            snapshotURL={doc.snapshotURL}
-            fileName={doc.fileName}
-            createdAt={doc.createdAt}
-            onDelete={handleDelete}
-          />
-        ))}
+        {portfolioMetaList
+          .slice()
+          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+          .map((doc, idx) => (
+            <FileCard
+              key={idx}
+              ref={doc.ref}
+              snapshotURL={doc.snapshotURL}
+              fileName={doc.fileName}
+              createdAt={doc.createdAt}
+              onDelete={handleDelete}
+            />
+          ))}
       </ul>
     </div>
   );

@@ -10,7 +10,7 @@ import { SavePortFolioData } from "@/app/result/actions";
 import { useUserStore } from "@/store/userStore";
 import { toast } from "react-toastify";
 import {
-  LoadingSpinnerTransparent,
+  LogoSpinner,
   MiniSpinner,
 } from "@/app/clientComponents/LoadingSpinner";
 import FileRenameInterface from "@/app/view/editor/[...params]/components/RenameInterface";
@@ -145,7 +145,7 @@ const GrapesEditor = () => {
     editorHandler();
   }, [fetchedCode]);
   if (isCodeLoading) {
-    return <LoadingSpinnerTransparent text="Loading editor" />;
+    return <LogoSpinner size={60} text="Loading the editor" />;
   }
   if (!fetchedCode && !isCodeLoading) {
     return <div>NO code file found</div>; // Fixed: Added return statement
