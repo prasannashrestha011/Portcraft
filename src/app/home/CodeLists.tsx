@@ -50,7 +50,7 @@ const CodeLists = () => {
     }
     notify(`✅ ${fileName} deleted`);
     setPortFolioMetaList((prev) =>
-      prev ? prev.filter((doc) => doc.ref !== ref) : []
+      prev ? prev.filter((doc) => doc.ref !== ref) : [],
     );
   };
   if (!user) {
@@ -80,7 +80,13 @@ const CodeLists = () => {
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 justify-items-center  ">
         {portfolioMetaList
           .slice()
-          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+          .sort((a, b) => {
+            const dateA =
+              a.createdAt instanceof Date ? a.createdAt : new Date(a.createdAt);
+            const dateB =
+              b.createdAt instanceof Date ? b.createdAt : new Date(b.createdAt);
+            return dateB.getTime() - dateA.getTime();
+          })
           .map((doc, idx) => (
             <FileCard
               key={idx}

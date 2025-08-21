@@ -18,7 +18,7 @@ const IndexDrawer = () => {
     <Drawer>
       <DrawerTrigger asChild>
         <Button size="lg" className="md:hidden">
-          <MoreHorizontal size={27} />
+          <MoreHorizontal size={87} className="text-xl" />
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-h-[80vh]">

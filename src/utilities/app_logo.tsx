@@ -10,7 +10,8 @@ export const AppLogo = ({ size = 32, className = "" }: AppLogoProps) => (
     height={size}
     viewBox="0 0 24 24"
     fill="none"
-    className={`transition-all duration-200 hover:scale-110 ${className}`}
+    className={`transition-all 
+duration-200 hover:scale-110 ${className}`}
   >
     {/* Background circle for better visual foundation */}
     {/* Main layers with enhanced styling */}
@@ -51,66 +52,80 @@ export const AnimatedLogo = ({
   return (
     <div className={`relative inline-block ${className}`}>
       <div
-        className="relative animate-pulse"
-        style={{ animationDuration: "4s" }}
-      >
-        <AppLogo size={size} className="text-slate-200 drop-shadow-lg" />
+        className="absolute inset-0 rounded-full opacity-40 animate-glow-breathe-1"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, rgba(59, 130, 246, 0.2) 40%, transparent 70%)",
+        }}
+      />
 
-        {/* Floating ball 1 - top right with bounce */}
-        <div
-          className="absolute w-2 h-2 bg-blue-400/60 rounded-full animate-bounce shadow-lg"
-          style={{
-            top: "10%",
-            right: "15%",
-            animationDuration: "3s",
-            animationDelay: "0s",
-          }}
-        />
+      <div
+        className="absolute inset-0 rounded-full opacity-50 animate-glow-breathe-2"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(147, 51, 234, 0.7) 0%, rgba(147, 51, 234, 0.3) 30%, transparent 60%)",
+        }}
+      />
 
-        {/* Floating ball 2 - bottom left with pulse */}
-        <div
-          className="absolute w-1.5 h-1.5 bg-emerald-400/50 rounded-full animate-pulse shadow-md"
-          style={{
-            bottom: "20%",
-            left: "10%",
-            animationDuration: "2.5s",
-            animationDelay: "1s",
-          }}
-        />
+      <div
+        className="absolute inset-0 rounded-full opacity-60 animate-glow-breathe-3"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.4) 20%, transparent 50%)",
+        }}
+      />
 
-        {/* Floating ball 3 - middle right with ping */}
-        <div
-          className="absolute w-1 h-1 bg-purple-300/70 rounded-full animate-ping"
-          style={{
-            top: "50%",
-            right: "5%",
-            animationDuration: "3.5s",
-            animationDelay: "2s",
-          }}
-        />
+      <AppLogo size={size} className="text-slate-200 relative z-10" />
 
-        {/* Floating ball 4 - top left */}
-        <div
-          className="absolute w-1.5 h-1.5 bg-cyan-400/40 rounded-full animate-bounce"
-          style={{
-            top: "25%",
-            left: "8%",
-            animationDuration: "4.5s",
-            animationDelay: "0.5s",
-          }}
-        />
+      <style jsx>{`
+        @keyframes glow-breathe-1 {
+          0%,
+          100% {
+            transform: scale(1.5);
+            opacity: 0.2;
+          }
+          50% {
+            transform: scale(2.5);
+            opacity: 0.4;
+          }
+        }
 
-        {/* Floating ball 5 - bottom right */}
-        <div
-          className="absolute w-1 h-1 bg-rose-300/60 rounded-full animate-pulse"
-          style={{
-            bottom: "15%",
-            right: "20%",
-            animationDuration: "3.2s",
-            animationDelay: "1.8s",
-          }}
-        />
-      </div>
+        @keyframes glow-breathe-2 {
+          0%,
+          100% {
+            transform: scale(1.2);
+            opacity: 0.3;
+          }
+          50% {
+            transform: scale(2);
+            opacity: 0.5;
+          }
+        }
+
+        @keyframes glow-breathe-3 {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.4;
+          }
+          50% {
+            transform: scale(1.6);
+            opacity: 0.6;
+          }
+        }
+
+        .animate-glow-breathe-1 {
+          animation: glow-breathe-1 3s ease-in-out infinite;
+        }
+
+        .animate-glow-breathe-2 {
+          animation: glow-breathe-2 2.5s ease-in-out infinite 0.5s;
+        }
+
+        .animate-glow-breathe-3 {
+          animation: glow-breathe-3 2s ease-in-out infinite 1s;
+        }
+      `}</style>
     </div>
   );
 };
